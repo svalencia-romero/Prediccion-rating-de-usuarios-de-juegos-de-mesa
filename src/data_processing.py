@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
 np.random.seed(22)
-import os
+# import os
+# print(os.getcwd())
 
-df = pd.read_csv("../data/raw/bgg_dataset.csv",sep=";")
+df = pd.read_csv("Prediccion-sobre-juegos-de-mesa/data/raw/bgg_dataset.csv",sep=";")
 
-""" 
+"""
 Primero vamos a limpiar todos los datos nulos de las columnas.
 
 0   ID                 
@@ -24,6 +25,7 @@ Primero vamos a limpiar todos los datos nulos de las columnas.
 13  Domains
 
 """
+
 # ID
 
 valores_nulos = df["ID"].isnull() # Vemos los valores nulos
@@ -74,4 +76,4 @@ df.loc[df["Mechanics"].isnull(), "Mechanics"] = "Not Defined" # Definimos como "
 
 df.loc[df["Domains"].isnull(), "Domains"] = "Not Defined" # Definimos como "Not Defined" los valores null del dataset
 
-df.to_csv("..data/processed/bgg_proc")
+df.to_csv("Prediccion-sobre-juegos-de-mesa/data/processed/bgg_proc.csv",index=False)
