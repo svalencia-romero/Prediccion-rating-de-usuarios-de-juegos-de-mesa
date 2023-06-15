@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 np.random.seed(22)
+import os
 
 df = pd.read_csv("../data/raw/bgg_dataset.csv",sep=";")
 
@@ -73,4 +74,4 @@ df.loc[df["Mechanics"].isnull(), "Mechanics"] = "Not Defined" # Definimos como "
 
 df.loc[df["Domains"].isnull(), "Domains"] = "Not Defined" # Definimos como "Not Defined" los valores null del dataset
 
-df.to_csv("../data/processed/bgg_proc.csv")
+df.to_csv("..data/processed/bgg_proc")
