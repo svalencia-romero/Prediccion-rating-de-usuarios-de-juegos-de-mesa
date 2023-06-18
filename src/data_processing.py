@@ -4,7 +4,7 @@ np.random.seed(22)
 # import os
 # print(os.getcwd())
 
-df = pd.read_csv("Prediccion-sobre-juegos-de-mesa/data/raw/bgg_dataset.csv",sep=";")
+df = pd.read_csv("../data/raw/bgg_dataset.csv",sep=";")
 
 """
 Primero vamos a limpiar todos los datos nulos de las columnas.
@@ -25,6 +25,7 @@ Primero vamos a limpiar todos los datos nulos de las columnas.
 13  Domains
 
 """
+
 
 # ID
 
@@ -78,7 +79,7 @@ df.loc[df["Domains"].isnull(), "Domains"] = "Not Defined" # Definimos como "Not 
 
 # Conversión de dataset procesado a csv con los datos limpios sin tocar variables Mechanics y Domain
 
-df.to_csv("Prediccion-sobre-juegos-de-mesa/data/processed/bgg_proc_clean.csv",index=False)
+df.to_csv("../data/processed/bgg_proc_clean.csv",index=False)
 
 # Procesamiento de Mechanics
 
@@ -125,4 +126,4 @@ df.drop(["0_Children's", '0_Customizable', '0_Family', '0_Not',
 
 
 
-df.to_csv("Prediccion-sobre-juegos-de-mesa/data/processed/bgg_proc_feat.csv",index=False)
+df.to_csv("../data/processed/bgg_proc_ml.csv",index=False)
