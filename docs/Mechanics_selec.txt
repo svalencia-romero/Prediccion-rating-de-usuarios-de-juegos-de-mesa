@@ -1,0 +1,183 @@
+Acting -- ok 
+Action Drafting -- action
+Action Points -- action
+Action Queue -- action
+Action Retrieval -- action
+Action Timer -- action
+Action/Event -- action
+Advantage Token -- token
+Alliances -- acting
+Area Majority / Influence -- board
+Area Movement -- board
+Area-Impulse -- board
+Auction/Bidding -- money
+Auction: Dexterity -- money
+Auction: Dutch -- money
+Auction: Dutch Priority -- money
+Auction: English -- money
+Auction: Fixed Placement -- money
+Auction: Once Around -- money
+Auction: Sealed Bid -- money
+Auction: Turn Order Until Pass -- money
+Automatic Resource Growth --Construction
+Betting and Bluffing  -- money
+Bias -- action
+Bingo -- money
+Bribery -- money
+Campaign / Battle Card Driven --cards
+Card Drafting --cards
+Card Play Conflict Resolution --cards
+Catch the Leader -- con acting
+Chaining -- cards
+Chit-Pull System -- turnbase
+Closed Economy Auction -- money
+Command Cards --cards
+Commodity Speculation -- money
+Communication Limits -- acting
+Connections -- board
+Constrained Bidding -- money
+Contracts -- money
+Cooperative Game -- Team
+Crayon Rail System -- board
+Critical Hits and Failures --action
+Cube Tower --action
+Deck Bag and Pool Building -- cards
+Deck Construction -- cards
+Deduction  --skillgames
+Delayed Purchase -- money
+Dice Rolling -- roll
+Die Icon Resolution -- Role
+Different Dice Movement -- roll
+Different Worker Types -- role
+Drafting --cards
+Elapsed Real Time Ending -- role
+Enclosure --role
+End Game Bonuses --role
+Events --role
+Finale Ending --role
+Flicking -- roll
+Follow -- con acting
+Force Commitment -- con acting
+Grid Coverage -- board
+Grid Movement -- board
+Hand Management -- cards
+Hexagon Grid -- board
+Hidden Movement -- board
+Hidden Roles -- con acting
+Hidden Victory Points -- score
+Highest-Lowest Scoring  -- score
+Hot Potato --action
+I Cut You Choose --action
+Impulse Movement -- board
+Income -- money
+Increase Value of Unchosen Resources -- money
+Induction -- skillgames
+Interrupts -- action
+Investment -- money
+Kill Steal -- action
+King of the Hill -- solo
+Ladder Climbing -- action
+Layering -- board
+Legacy Game -- role
+Line Drawing -- action
+Line of Sight -- board
+Loans -- money
+Lose a Turn -- turnbase
+Mancala -- resour_farm
+Map Addition --board
+Map Deformation --board
+Map Reduction --board
+Market -- money
+Matching -- action
+Measurement Movement -- action
+Melding and Splaying --cards
+Memory -- skillgames
+Minimap Resolution  -- board
+Modular Board -- board
+Move Through Deck --cards
+Movement Points --board
+Movement Template  --board
+Moving Multiple Units -- board
+Multiple Maps --- Campaign
+Multiple-Lot Auction -- money
+Narrative Choice / Paragraph -- role
+Negotiation -- acting
+Network and Route Building -- Construction
+Not Defined -- not defined
+Once-Per-Game Abilities -- skillgames
+Order Counters -- money
+Ownership -- Construction
+Paper-and-Pencil -- action
+Passed Action Token -- token
+Pattern Building -- Construction
+Pattern Movement -- turnbase
+Pattern Recognition -- turnbase
+Physical Removal -- token
+Pick-up and Deliver -- Construction
+Pieces as Map -- board
+Player Elimination -- score
+Player Judge -- con acting
+Point to Point Movement -- board
+Predictive Bid -- money
+Prisoner's Dilemma --team
+Programmed Movement -- turnbase
+Push Your Luck -- action
+Race -- action
+Random Production -- Construction
+Ratio / Combat Results Table -- role
+Re-rolling and Locking -- roll
+Real-Time -- action
+Relative Movement -- turnbase
+Resource to Move -- constr_farm
+Rock-Paper-Scissors -- skillgames
+Role Playing -- con acting
+Roles with Asymmetric Information -- con acting
+Roll / Spin and Move -- roll
+Rondel -- roll_thng
+Scenario / Mission / Campaign Game -- role
+Score-and-Reset Game -- score
+Secret Unit Deployment -- board
+Selection Order Bid -- money
+Semi-Cooperative Game -- Team
+Set Collection -- cards
+Simulation -- role
+Simultaneous Action Selection -- action
+Singing -- action
+Single Loser Game -- solo
+Slide/Push --board
+Solo / Solitaire Game -- solo
+Speed Matching -- skillgames
+Square Grid -- board
+Stacking and Balancing -- money
+Stat Check Resolution -- role
+Static Capture -- action
+Stock Holding -- money
+Storytelling -- con acting
+Sudden Death Ending -- action
+Take That -- action
+Targeted Clues --skillgames
+Team-Based Game --team
+Tech Trees / Tech Tracks -- constr_farm
+Three Dimensional Movement -- action
+Tile Placement --board
+Time Track --skillgames
+Track Movement -- action
+Trading -- money
+Traitor Game -- con acting
+Trick-taking --cards
+Tug of War -- team
+Turn Order: Auction -- turn
+Turn Order: Claim Action -- turn
+Turn Order: Pass Order -- turn
+Turn Order: Progressive -- turn
+Turn Order: Random -- turn
+Turn Order: Role Order -- turn
+Turn Order: Stat-Based -- turn
+Variable Phase Order --turn
+Variable Player Powers -- role
+Variable Set-up -- role
+Victory Points as a Resource -- score
+Voting -- con acting
+Worker Placement -- role
+Worker Placement with Dice Workers -- roll_thng
+Zone of Control -- board

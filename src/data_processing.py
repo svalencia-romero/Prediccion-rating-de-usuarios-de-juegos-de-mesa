@@ -76,4 +76,30 @@ df.loc[df["Mechanics"].isnull(), "Mechanics"] = "Not Defined" # Definimos como "
 
 df.loc[df["Domains"].isnull(), "Domains"] = "Not Defined" # Definimos como "Not Defined" los valores null del dataset
 
-df.to_csv("Prediccion-sobre-juegos-de-mesa/data/processed/bgg_proc.csv",index=False)
+# Conversión de dataset procesado a csv con los datos limpios sin tocar variables Mechanics y Domain
+
+df.to_csv("Prediccion-sobre-juegos-de-mesa/data/processed/bgg_proc_clean.csv",index=False)
+
+
+df = df.join(df['Domains'].str.split(expand=True))
+df = pd.get_dummies(df, columns=[0,1,2,3,4,5])
+
+df["Children"] = df[["0_Children's", "2_Children's"]].any(axis='columns').astype(int)
+df["Customizable"] = df[["2_Customizable", "0_Customizable"]].any(axis='columns').astype(int)
+df["Family"] = df[["2_Family", "0_Family"]].any(axis='columns').astype(int)
+df["Party"] = df[["0_Party", "2_Party","4_Party"]].any(axis='columns').astype(int)
+df["Strategy"] = df[["0_Strategy", "2_Strategy"]].any(axis='columns').astype(int)
+df["Thematic"] = df[["0_Thematic", "2_Thematic","4_Thematic"]].any(axis='columns').astype(int)
+df["Wargames"] = df[["0_Wargames", "2_Wargames","4_Wargames"]].any(axis='columns').astype(int)
+df["Not Defined"] = df[["0_Not","1_Defined"]].any(axis='columns').astype(int)
+df = df.rename(columns={"0_Abstract":"Abstract"})
+df["Abstract"].astype(int)
+df.drop(["0_Children's", '0_Customizable', '0_Family', '0_Not',
+       '0_Party', '0_Strategy', '0_Thematic', '0_Wargames', '1_Defined',
+       '1_Games', '1_Games,', "2_Children's", '2_Customizable', '2_Family',
+       '2_Party', '2_Strategy', '2_Thematic', '2_Wargames', '3_Games',
+       '3_Games,', '4_Party', '4_Thematic', '4_Wargames', '5_Games'],inplace=True,axis=1)
+
+
+
+df.to_csv("Prediccion-sobre-juegos-de-mesa/data/processed/bgg_proc_feat.csv",index=False)
