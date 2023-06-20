@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 np.random.seed(22)
-# import os
-# print(os.getcwd())
+import os
+print(os.getcwd())
 
 df = pd.read_csv("../data/raw/bgg_dataset.csv",sep=";")
 
