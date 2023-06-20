@@ -4,7 +4,7 @@ np.random.seed(22)
 import os
 print(os.getcwd())
 
-df = pd.read_csv("../data/raw/bgg_dataset.csv",sep=";")
+df = pd.read_csv("..data/raw/bgg_dataset.csv",sep=";")
 
 """
 Primero vamos a limpiar todos los datos nulos de las columnas.
