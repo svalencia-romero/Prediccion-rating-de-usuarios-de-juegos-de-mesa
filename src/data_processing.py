@@ -1,10 +1,8 @@
 import pandas as pd
 import numpy as np
 np.random.seed(22)
-import os
-print(os.getcwd())
-
-df = pd.read_csv("..data/raw/bgg_dataset.csv",sep=";")
+import time
+df = pd.read_csv("../data/raw/bgg_dataset.csv",sep=";")
 
 """
 Primero vamos a limpiar todos los datos nulos de las columnas.
@@ -127,3 +125,7 @@ df.drop(["0_Children's", '0_Customizable', '0_Family', '0_Not',
 
 
 df.to_csv("../data/processed/bgg_proc_ml.csv",index=False)
+
+print("Procesado de datos completado")
+time.sleep(5)
+

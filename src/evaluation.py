@@ -9,19 +9,20 @@ def load_model(model_path):
         model = pickle.load(f)
     return model
 
-
+# Cargamos el modelo entrenado
 
 model_path = '../models/trained_pol_3.pkl'
 
 loaded_model = load_model(model_path)
 
 # Convertimos a polinomio
-poly_reg = PolynomialFeatures(degree = 3)
-poly_reg.fit("../data/train/X_train.csv")
-X_train_poly = poly_reg.transform("../data/test/X_train.csv")
-X_test_poly = poly_reg.transform("../data/test/X_test.csv")
-train_prediction = pol_reg.predict(X_train_poly)
 
-print(pol_reg.score(X_train_poly, "../data/train/y_train.csv"))
-print("MAE train", mean_absolute_error("../data/train/y_train.csv", train_prediction))
-print("MSE train", mean_squared_error("../data/train/y_train.csv", train_prediction))
+
+predictions = lin_reg.predict(X_test)
+
+print("MAE:", mean_absolute_error(y_test, predictions))
+print("MAPE:", mean_absolute_percentage_error(y_test, predictions))
+print("MSE:", mean_squared_error(y_test, predictions))
+print("RMSE:", np.sqrt(mean_squared_error(y_test, predictions)))
+print("r2_score train", lin_reg.score(X_train, y_train))
+print("r2_score test",lin_reg.score(X_test, y_test))
