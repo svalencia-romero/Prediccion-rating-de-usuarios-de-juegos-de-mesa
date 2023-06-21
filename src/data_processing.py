@@ -45,7 +45,9 @@ df["Year Published"] = df["Year Published"].astype(int) # Pasamos a int todos lo
 
 # Max Players la dejamos igual.
 
-# Play Time la dejamos igual.
+# Play Time.
+
+df.loc[(df["Play Time"] >= 0) & (df["Play Time"] <= 4), "Play Time"] = 5 # Como es bastante complicado jugar a un juego que se tar 0,1,2,3 o 4 min los convierto todos a 5
 
 # Min Age la dejamos igual.
 
