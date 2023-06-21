@@ -26,6 +26,11 @@ X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_siz
 
 poly_feats = PolynomialFeatures(degree = model_config['degree'])
 poly_feats.fit(X_train)
+
+# Salvamos el modelo polinomico para después utilizarlo
+pickle.dump(poly_feats, open('../models/transformacion_polinomio.pkl', 'wb'))
+  
+
 X_train_poly = poly_feats.transform(X_train)
 X_test_poly = poly_feats.transform(X_test) 
 

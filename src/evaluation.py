@@ -34,10 +34,12 @@ y_test = df_test['Rating Average']
 X_train = df_train.drop('Rating Average', axis=1)
 y_train = df_train['Rating Average']
 
-# Conversión a polinomica
+# Conversión a polinomica, cargo el pickle hecho
 
-poly_feats = PolynomialFeatures(degree = model_config['degree'])
-poly_feats.fit(X_train)
+pol_path_mod = '../models/transformacion_polinomio.pkl'
+
+poly_feats = load_model(pol_path_mod)
+
 X_test_poly = poly_feats.transform(X_test)
 
 # Realizar las predicciones
