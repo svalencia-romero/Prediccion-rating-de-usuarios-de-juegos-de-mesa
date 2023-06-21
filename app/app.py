@@ -21,7 +21,7 @@ def main():
     #funcion para poner los parametros en el sidebar
     
     def user_input_parameters():
-        bgg_rank = st.sidebar.slider("BGG Rank",0,10)
+        bgg_rank = st.sidebar.slider("BGG Rank",1,20344)
         Complejidad_juego = st.sidebar.slider("Complexity Average",0,5)
         Mech_role_camp = st.sidebar.slider("Mech_role_camp",0,1)
         Strategy = st.sidebar.slider("Strategy",0,1)
