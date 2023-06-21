@@ -1,4 +1,4 @@
-Lib
-Include
-etc
-share
+Lib/
+Include/
+etc/
+share/
