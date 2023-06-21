@@ -22,25 +22,14 @@ with open('../models/model_config.yaml', 'r') as file:
 
 # Creación de train y test
 
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= model_config['test_size'],random_state=model_config['random_state'])
+
 poly_feats = PolynomialFeatures(degree = model_config['degree'])
-poly_feats.fit(X)
-X_poly = poly_feats.transform(X)
+poly_feats.fit(X_train)
+X_train_poly = poly_feats.transform(X_train)
+X_test_poly = poly_feats.transform(X_test) 
 
-X_train, X_test, y_train, y_test = model_selection.train_test_split(X_poly,y,test_size= model_config['test_size'],random_state=model_config['random_state'])
-
-
-feature_names = X.columns.tolist()
-
-# # Obtener los nombres generados por PolynomialFeatures
-# poly_feature_names = poly_feats.get_feature_names_out(feature_names)
-
-# # Crear el DataFrame con los nombres de las columnas
-# df_train = pd.DataFrame(X_train, columns=poly_feature_names)
-# df_train['Rating Average'] = y_train
-
-# df_test = pd.DataFrame(X_test, columns=poly_feature_names)
-# df_test['Rating Average'] = y_train
-
+#Transformador Data Frame de Train y test
 
 df_train = pd.DataFrame(X_train)
 df_train['Rating Average'] = y_train
@@ -60,7 +49,7 @@ lin_reg = LinearRegression()
 # Entrenamiento del modelo
 
 print("Entrenando modelo...")
-lin_reg.fit(X_train, y_train)
+lin_reg.fit(X_train_poly, y_train)
 
 # Subida del modelo.
 pickle.dump(lin_reg, open('../models/trained_pol_3.pkl', 'wb'))
