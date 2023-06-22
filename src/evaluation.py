@@ -54,9 +54,6 @@ print("Mean Squared Error (MSE):", round(mse_lin,4))
 print("Root Mean Squared Error (RMSE):", round(rmse_lin,4))
 print("R-squared (R2) Score:", round(r2_lin,4),"\n")
 
-time.sleep(5)
-
-
 # Modelo Arbol decisión
 
 # Carga de modelo
@@ -80,6 +77,6 @@ print("Mean Squared Error (MSE):", round(mse_dtr,4))
 print("Root Mean Squared Error (RMSE):", round(rmse_dtr,4))
 print("R-squared (R2) Score:", round(r2_dtr,4),"\n")
 
-time.sleep(5)
-
 print("Evaluación Finalizada")
+print("Presiona ENTER para salir...")
+input()
