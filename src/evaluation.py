@@ -1,7 +1,6 @@
 import pickle
 import pandas as pd
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from sklearn.preprocessing import PolynomialFeatures
+from sklearn.metrics import mean_absolute_error, mean_absolute_percentage_error, mean_squared_error, r2_score
 import time 
 import yaml
 
@@ -49,6 +48,7 @@ predictions = loaded_model.predict(X_test_poly)
 # Calcular las métricas de evaluación
 
 mae = mean_absolute_error(y_test, predictions)
+mape = mean_absolute_percentage_error(y_test, predictions)
 mse = mean_squared_error(y_test, predictions)
 rmse = mean_squared_error(y_test, predictions, squared=False)
 r2 = r2_score(y_test, predictions)
@@ -56,6 +56,7 @@ r2 = r2_score(y_test, predictions)
 # Imprimir las métricas
 
 print("Mean Absolute Error (MAE):", round(mae,4))
+print("Mean Absolute Percentage Error (MAPE):", round(mape,4))
 print("Mean Squared Error (MSE):", round(mse,4))
 print("Root Mean Squared Error (RMSE):", round(rmse,4))
 print("R-squared (R2) Score:", round(r2,4))
