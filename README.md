@@ -13,7 +13,7 @@ Para hacer la predicción seguiremos el siguiente orden:
 > ### 4. [Evaluación de los modelos predictivos.](https://github.com/Kuja182/Prediccion-sobre-juegos-de-mesa/blob/main/notebooks/04_Evaluacion_Modelo.ipynb)    
 - Con métricas concretas evaluaremos nuestros modelos previamente entrenados.  
 > ### 5. [App para el cliente final.](https://github.com/Kuja182/Prediccion-sobre-juegos-de-mesa/tree/main/app)  
-- Con streamlit lanzaremos un aplicación local donde predecir que rating de usuarios tenemos ante ciertos parametros de un juego de mesa nuevo.
+- Con streamlit lanzaremos un aplicación local donde predecir el rating de usuarios tenemos ante ciertos parametros de un juego de mesa nuevo.
 ## OBTENCIÓN DE LOS DATOS
 ### DATASETS Y FUENTES ALTERNATIVAS DE DATOS
 https://www.kaggle.com/datasets/andrewmvd/board-games
