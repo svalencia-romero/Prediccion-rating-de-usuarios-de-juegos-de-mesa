@@ -17,4 +17,4 @@ Para hacer la predicción seguiremos el siguiente orden:
 ## OBTENCIÓN DE LOS DATOS
 ### DATASETS Y FUENTES ALTERNATIVAS DE DATOS
 https://www.kaggle.com/datasets/andrewmvd/board-games
-Dilini Samarasinghe, July 5, 2021, "BoardGameGeek Dataset on Board Games", IEEE Dataport, doi: https://dx.doi.org/10.21227/9g61-bs59.
+Dilini Samarasinghe, July 5, 2021, "BoardGameGeek Dataset on Board Games", IEEE Dataport
