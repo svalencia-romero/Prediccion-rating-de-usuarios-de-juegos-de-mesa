@@ -2,23 +2,15 @@ import pickle
 import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_absolute_percentage_error, mean_squared_error, r2_score
 import time 
-import yaml
+import functions
 
-
-# Llamamos al modelo concreto de ML que estamos utilizando
-def load_model(model_path):
-    with open(model_path, 'rb') as f:
-        model = pickle.load(f)
-    return model
+# Modelo lineal
 
 # Cargamos el modelo entrenado y sus caracteristicas para arreglar con conversion polinómica.
 
-with open('../models/modelo_lineal/model_config.yaml', 'r') as file:
-    model_config = yaml.safe_load(file)
-
 model_path = '../models/modelo_lineal/trained_pol_3.pkl'
 
-loaded_model = load_model(model_path)
+loaded_model_lin = functions.load_model(model_path)
 
 # Cargamos data test
 
@@ -37,28 +29,57 @@ y_train = df_train['Rating Average']
 
 pol_path_mod = '../models/modelo_lineal/transformacion_polinomio.pkl'
 
-poly_feats = load_model(pol_path_mod)
+poly_feats = functions.load_model(pol_path_mod)
 
 X_test_poly = poly_feats.transform(X_test)
 
 # Realizar las predicciones
 
-predictions = loaded_model.predict(X_test_poly)
+predictions = loaded_model_lin.predict(X_test_poly)
 
 # Calcular las métricas de evaluación
 
-mae = mean_absolute_error(y_test, predictions)
-mape = mean_absolute_percentage_error(y_test, predictions)
-mse = mean_squared_error(y_test, predictions)
-rmse = mean_squared_error(y_test, predictions, squared=False)
-r2 = r2_score(y_test, predictions)
+mae_lin = mean_absolute_error(y_test, predictions)
+mape_lin = mean_absolute_percentage_error(y_test, predictions)
+mse_lin = mean_squared_error(y_test, predictions)
+rmse_lin = mean_squared_error(y_test, predictions, squared=False)
+r2_lin = r2_score(y_test, predictions)
 
 # Imprimir las métricas
 
-print("Mean Absolute Error (MAE):", round(mae,4))
-print("Mean Absolute Percentage Error (MAPE):", round(mape,4))
-print("Mean Squared Error (MSE):", round(mse,4))
-print("Root Mean Squared Error (RMSE):", round(rmse,4))
-print("R-squared (R2) Score:", round(r2,4))
+print("Métricas del modelo lineal","\n")
+print("Mean Absolute Error (MAE):", round(mae_lin,4))
+print("Mean Absolute Percentage Error (MAPE):", round(mape_lin,4))
+print("Mean Squared Error (MSE):", round(mse_lin,4))
+print("Root Mean Squared Error (RMSE):", round(rmse_lin,4))
+print("R-squared (R2) Score:", round(r2_lin,4),"\n")
 
 time.sleep(5)
+
+
+# Modelo Arbol decisión
+
+# Carga de modelo
+model_path = '../models/arbol_decision/dtr_gs.pkl'
+
+loaded_model_dtr_gs = functions.load_model(model_path)
+
+# Obtener el mejor modelo entrenado
+
+y_pred_dtr = loaded_model_dtr_gs.best_estimator_.predict(X_test)
+
+mae_dtr = mean_absolute_error(y_test, y_pred_dtr)
+mape_dtr = mean_absolute_percentage_error(y_test, y_pred_dtr)
+mse_dtr = mean_squared_error(y_test, y_pred_dtr)
+rmse_dtr = mean_squared_error(y_test, y_pred_dtr, squared=False)
+r2_dtr = r2_score(y_test, y_pred_dtr)
+print("Métricas del modelo arbol de decisión","\n")
+print("Mean Absolute Error (MAE):", round(mae_dtr,4))
+print("Mean Absolute Percentage Error (MAPE):", round(mape_dtr,4))
+print("Mean Squared Error (MSE):", round(mse_dtr,4))
+print("Root Mean Squared Error (RMSE):", round(rmse_dtr,4))
+print("R-squared (R2) Score:", round(r2_dtr,4),"\n")
+
+time.sleep(5)
+
+print("Evaluación Finalizada")

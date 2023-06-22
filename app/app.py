@@ -16,7 +16,7 @@ def main():
     # Titulo
     st.title("Modelo Juegos de Mesa")
     # Titulo de sidebar
-    st.sidebar.header("User input Parameters")
+    st.sidebar.header("Introduzca los parametros necesarios")
     
     #funcion para poner los parametros en el sidebar
     
