@@ -4,6 +4,10 @@ from sklearn.metrics import mean_absolute_error, mean_absolute_percentage_error,
 import time 
 import functions
 
+# Dataframe para pasar a csv en caso de que queramos
+
+df_conc = pd.DataFrame({"Métricas": ["MAE","MAPE","MSE","RMSE", "R2Score"]}).set_index("Métricas")
+
 # Modelo lineal
 
 # Cargamos el modelo entrenado y sus caracteristicas para arreglar con conversion polinómica.
@@ -45,6 +49,8 @@ mse_lin = mean_squared_error(y_test, predictions)
 rmse_lin = mean_squared_error(y_test, predictions, squared=False)
 r2_lin = r2_score(y_test, predictions)
 
+list_lin = [round(mae_lin,4),round(mape_lin,4),round(mse_lin,4),round(rmse_lin,4),round(r2_lin,4)]
+
 # Imprimir las métricas
 
 print("Métricas del modelo lineal","\n")
@@ -53,6 +59,7 @@ print("Mean Absolute Percentage Error (MAPE):", round(mape_lin,4))
 print("Mean Squared Error (MSE):", round(mse_lin,4))
 print("Root Mean Squared Error (RMSE):", round(rmse_lin,4))
 print("R-squared (R2) Score:", round(r2_lin,4),"\n")
+
 
 # Modelo Arbol decisión
 
@@ -77,6 +84,16 @@ print("Mean Squared Error (MSE):", round(mse_dtr,4))
 print("Root Mean Squared Error (RMSE):", round(rmse_dtr,4))
 print("R-squared (R2) Score:", round(r2_dtr,4),"\n")
 
+list_dtr = [round(mae_dtr,4),round(mape_dtr,4),round(mse_dtr,4),round(rmse_dtr,4),round(r2_dtr,4)]
+
 print("Evaluación Finalizada")
+print()
+pregunta = input("¿Quieres un csv con los resultados obtenidos? (S/N) ")
+if pregunta == "S" or "s":
+    df_conc["Lineal Regression"] = list_lin
+    df_conc["Decision Tree Regressor"] = list_dtr
+    df_conc.to_csv("../data/processed/analisis_metricas.csv")
+    print("CSV creado con éxito")
+
 print("Presiona ENTER para salir...")
 input()

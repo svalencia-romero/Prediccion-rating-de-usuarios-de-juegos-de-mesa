@@ -1,0 +1,6 @@
+Métricas,Lineal Regression,Decision Tree Regressor
+MAE,0.356,0.3421
+MAPE,0.0564,0.0538
+MSE,0.2356,0.2373
+RMSE,0.4854,0.4871
+R2Score,0.7304,0.7284

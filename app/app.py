@@ -1,7 +1,7 @@
 import streamlit as st
 import pickle
 import pandas as pd
-import base64
+# import base64
 
 # Extraer los archivos pickle 
 
@@ -58,21 +58,21 @@ def main():
             prediccion = dtr_gs.best_estimator_.predict(df)
             st.success(prediccion)
 
-def add_bg_from_local(image_file):
-    with open(image_file, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read())
-    st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-image: url(data:image/{"jpg"};base64,{encoded_string.decode()});
-        background-size: cover
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-    )
-add_bg_from_local('../img/board.jpg')  
+# def add_bg_from_local(image_file):
+#     with open(image_file, "rb") as image_file:
+#         encoded_string = base64.b64encode(image_file.read())
+#     st.markdown(
+#     f"""
+#     <style>
+#     .stApp {{
+#         background-image: url(data:image/{"jpg"};base64,{encoded_string.decode()});
+#         background-size: cover
+#     }}
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+#     )
+# add_bg_from_local('../img/board.jpg')  
 
 # Llamar a la función para establecer el fondo
 
