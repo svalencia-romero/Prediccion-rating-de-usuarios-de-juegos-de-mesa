@@ -1,4 +1,4 @@
->## [Predicción de rating de juegos de mesa.](https://github.com/Kuja182/Prediccion-sobre-juegos-de-mesa/tree/main)
+>## [Predicción de rating de juegos de mesa.](https://github.com/Kuja182/Prediccion-rating-de-usuarios-de-juegos-de-mesa)
 En este proyecto de Machine Learning vamos a predecir como va a ser el rating de los usuarios en función de las caracteristicas de los juegos y como mostrarselo a startups que quiera hacer un juego de mesa.  
 Todos los juegos que aparecen en este dataset de juegos de mesa son los que han sido valorados al menos 30 veces por usuarios.    
 Para hacer la predicción seguiremos el siguiente orden:  
