@@ -4,7 +4,7 @@ Todos los juegos que aparecen en este dataset de juegos de mesa son los que han 
 Para hacer la predicción seguiremos el siguiente orden:  
 > ### 1. [Preprocesamiento de datos y creación de nuevas features para predicción.](https://github.com/Kuja182/Prediccion-sobre-juegos-de-mesa/blob/main/notebooks/01_Preprocesamiento.ipynb)  
 - Obtendremos dos datasets con las siguientes caracteristicas:  
-  1 Tener una idea general del problema y analizarlo sin crear nuevas variables.
+  1 Tener una idea general del problema y analizarlo sin crear nuevas variables.  
   2 Crear nuevas variables y transformarlas en variables utiles para hacer nuestro modelo de ML.  
 > ### 2. [EDA (Análisis de datos de los datasets procesados)](https://github.com/Kuja182/Prediccion-sobre-juegos-de-mesa/blob/main/notebooks/02_EDA.ipynb)    
 - Sabremos cuales son las variables que mayor relación tienen con nuestro problema a valorar.  
@@ -13,7 +13,7 @@ Para hacer la predicción seguiremos el siguiente orden:
 > ### 4. [Evaluación de los modelos predictivos.](https://github.com/Kuja182/Prediccion-sobre-juegos-de-mesa/blob/main/notebooks/04_Evaluacion_Modelo.ipynb)    
 - Con métricas concretas evaluaremos nuestros modelos previamente entrenados.  
 > ### 5. [App para el cliente final.](https://github.com/Kuja182/Prediccion-sobre-juegos-de-mesa/tree/main/app)  
-- Con streamlit lanzaremos un aplicación local donde predecir que rating de usuarios tenemos ante ciertos parametros de un juego de mesa nuevo.
+- Con streamlit lanzaremos un aplicación local donde predecir el rating de usuarios tenemos ante ciertos parametros de un juego de mesa nuevo.
 ## OBTENCIÓN DE LOS DATOS
 ### DATASETS Y FUENTES ALTERNATIVAS DE DATOS
 https://www.kaggle.com/datasets/andrewmvd/board-games
