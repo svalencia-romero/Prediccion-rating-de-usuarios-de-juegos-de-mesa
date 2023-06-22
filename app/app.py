@@ -1,8 +1,9 @@
 import streamlit as st
 import pickle
 import pandas as pd
+import base64
 
-#Extraer los archivos pickle
+# Extraer los archivos pickle 
 
 with open("../models/modelo_lineal/trained_pol_3.pkl", "rb") as li:
     lin_reg = pickle.load(li)
@@ -10,7 +11,11 @@ with open("../models/modelo_lineal/trained_pol_3.pkl", "rb") as li:
 with open("../models/modelo_lineal/transformacion_polinomio.pkl", "rb") as f:
     transformacion = pickle.load(f)
 
-# Funcion
+with open("../models/arbol_decision/dtr_gs.pkl", "rb") as dtr:
+    dtr_gs = pickle.load(dtr)
+
+
+# Funcion principal de la App
 
 def main():
     # Titulo
@@ -37,7 +42,7 @@ def main():
     
     df = user_input_parameters()
     
-    option =["Regresion lineal","Otro modelo"]
+    option =["Linear Regression","Decision Tree Regressor"]
     model = st.sidebar.selectbox("¿Que modelo quieres probar?",option)
 
     st.subheader("User Input Parameters")
@@ -45,10 +50,32 @@ def main():
     st.write(df)
 
     if st.button("RUN"):
-        if model == "Regresion lineal":
+        if model == "Linear Regression":
             df_transformado = transformacion.transform(df)
             prediccion = lin_reg.predict(df_transformado)
             st.success(prediccion)
+        if model == "Decision Tree Regressor":
+            prediccion = dtr_gs.best_estimator_.predict(df)
+            st.success(prediccion)
+
+def add_bg_from_local(image_file):
+    with open(image_file, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read())
+    st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image: url(data:image/{"jpg"};base64,{encoded_string.decode()});
+        background-size: cover
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+    )
+add_bg_from_local('../img/board.jpg')  
+
+# Llamar a la función para establecer el fondo
 
 if __name__ == "__main__":
     main()
+    
