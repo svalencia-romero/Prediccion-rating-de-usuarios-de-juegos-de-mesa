@@ -4,10 +4,10 @@ import pandas as pd
 
 #Extraer los archivos pickle
 
-with open("../models/trained_pol_3.pkl", "rb") as li:
+with open("../models/modelo_lineal/trained_pol_3.pkl", "rb") as li:
     lin_reg = pickle.load(li)
 
-with open("../models/transformacion_polinomio.pkl", "rb") as f:
+with open("../models/modelo_lineal/transformacion_polinomio.pkl", "rb") as f:
     transformacion = pickle.load(f)
 
 # Funcion
@@ -26,11 +26,11 @@ def main():
         Mech_role_camp = st.sidebar.slider("Mech_role_camp",0,1)
         Strategy = st.sidebar.slider("Strategy",0,1)
         Wargames = st.sidebar.slider("Wargames",0,1)
-        data ={"bgg_rank":bgg_rank,
-               "complexity_average":Complejidad_juego,
-               "mech_role_camp":Mech_role_camp,
-               "strategy":Strategy,
-               "wargames":Wargames,
+        data ={"BGG Rank":bgg_rank,
+               "Complexity Average":Complejidad_juego,
+               "Mech_role_camp":Mech_role_camp,
+               "Strategy":Strategy,
+               "Wargames":Wargames,
                }
         features = pd.DataFrame(data,index=[0])
         return features

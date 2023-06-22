@@ -16,7 +16,7 @@ y = df["Rating Average"]
 
 # Caracteristicas de modelo
 
-with open('../models/model_config.yaml', 'r') as file:
+with open('../models/modelo_lineal/model_config.yaml', 'r') as file:
     model_config = yaml.safe_load(file)
 
 
@@ -28,7 +28,7 @@ poly_feats = PolynomialFeatures(degree = model_config['degree'])
 poly_feats.fit(X_train)
 
 # Salvamos el modelo polinomico para después utilizarlo
-pickle.dump(poly_feats, open('../models/transformacion_polinomio.pkl', 'wb'))
+pickle.dump(poly_feats, open('../models/modelo_lineal/transformacion_polinomio.pkl', 'wb'))
   
 
 X_train_poly = poly_feats.transform(X_train)
@@ -57,7 +57,7 @@ print("Entrenando modelo...")
 lin_reg.fit(X_train_poly, y_train)
 
 # Subida del modelo.
-pickle.dump(lin_reg, open('../models/trained_pol_3.pkl', 'wb'))
+pickle.dump(lin_reg, open('../models/modelo_lineal/trained_pol_3.pkl', 'wb'))
 
 print("Entrenamiento completado")
 time.sleep(5)

@@ -13,10 +13,10 @@ def load_model(model_path):
 
 # Cargamos el modelo entrenado y sus caracteristicas para arreglar con conversion polinómica.
 
-with open('../models/model_config.yaml', 'r') as file:
+with open('../models/modelo_lineal/model_config.yaml', 'r') as file:
     model_config = yaml.safe_load(file)
 
-model_path = '../models/trained_pol_3.pkl'
+model_path = '../models/modelo_lineal/trained_pol_3.pkl'
 
 loaded_model = load_model(model_path)
 
@@ -35,7 +35,7 @@ y_train = df_train['Rating Average']
 
 # Conversión a polinomica, cargo el pickle hecho
 
-pol_path_mod = '../models/transformacion_polinomio.pkl'
+pol_path_mod = '../models/modelo_lineal/transformacion_polinomio.pkl'
 
 poly_feats = load_model(pol_path_mod)
 
