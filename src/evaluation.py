@@ -19,15 +19,12 @@ loaded_model_lin = functions.load_model(model_path)
 # Cargamos data test
 
 df_test = pd.read_csv('../data/test/test.csv')
-df_train = pd.read_csv('../data/train/train.csv')
 
-# Obtener las características (X_test) y las etiquetas (y_test)
+# Obtener las características (X_test)
 
 X_test = df_test.drop('Rating Average', axis=1)
 y_test = df_test['Rating Average']
 
-X_train = df_train.drop('Rating Average', axis=1)
-y_train = df_train['Rating Average']
 
 # Conversión a polinomica, cargo el pickle hecho
 
@@ -89,7 +86,7 @@ list_dtr = [round(mae_dtr,4),round(mape_dtr,4),round(mse_dtr,4),round(rmse_dtr,4
 print("Evaluación Finalizada")
 print()
 pregunta = input("¿Quieres un csv con los resultados obtenidos? (S/N) ")
-if pregunta == "S" or "s":
+if pregunta == "S" or pregunta == "s":
     df_conc["Lineal Regression"] = list_lin
     df_conc["Decision Tree Regressor"] = list_dtr
     df_conc.to_csv("../data/processed/analisis_metricas.csv")
