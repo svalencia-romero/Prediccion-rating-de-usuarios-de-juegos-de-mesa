@@ -1,20 +1,10 @@
-import pickle
 import pandas as pd
-from sklearn.metrics import mean_absolute_error, mean_absolute_percentage_error, mean_squared_error, r2_score
-import time 
+from sklearn.metrics import mean_absolute_error, mean_absolute_percentage_error, mean_squared_error, r2_score 
 import functions
 
 # Dataframe para pasar a csv en caso de que queramos
 
 df_conc = pd.DataFrame({"Métricas": ["MAE","MAPE","MSE","RMSE", "R2Score"]}).set_index("Métricas")
-
-# Modelo lineal
-
-# Cargamos el modelo entrenado y sus caracteristicas para arreglar con conversion polinómica.
-
-model_path = '../models/modelo_lineal/trained_pol_3.pkl'
-
-loaded_model_lin = functions.load_model(model_path)
 
 # Cargamos data test
 
@@ -25,6 +15,13 @@ df_test = pd.read_csv('../data/test/test.csv')
 X_test = df_test.drop('Rating Average', axis=1)
 y_test = df_test['Rating Average']
 
+# Modelo lineal
+
+# Cargamos el modelo entrenado y sus caracteristicas para arreglar con conversion polinómica.
+
+model_path = '../models/modelo_lineal/trained_pol_3.pkl'
+
+loaded_model_lin = functions.load_model(model_path)
 
 # Conversión a polinomica, cargo el pickle hecho
 
