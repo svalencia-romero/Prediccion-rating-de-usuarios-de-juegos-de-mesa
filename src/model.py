@@ -5,6 +5,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestRegressor
 import pickle
 import time
 import functions
@@ -67,13 +69,11 @@ def tree_dec_gs():
 
     X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= dtr_gs_model_conf['test_size'],random_state=dtr_gs_model_conf['random_state'])
 
-    # Crear el estimador DecisionTreeRegressor
-    estimator = DecisionTreeRegressor(random_state=5)
-
     # Crear el objeto GridSearchCV con la configuración cargada
-    dtr_gs = GridSearchCV(estimator, dtr_gs_model_conf['GridSearchCV']['param_grid'], cv=dtr_gs_model_conf['GridSearchCV']['cv'],
-                            scoring=dtr_gs_model_conf['GridSearchCV']['scoring'])
-
+    pipeline = dtr_gs_model_conf['pipeline']
+    parameters = dtr_gs_model_conf['parameters']
+    dtr_gs = GridSearchCV(pipeline, parameters, cv=dtr_gs_model_conf['grid_search']['cv'], scoring=dtr_gs_model_conf['grid_search']['scoring'])
+   
     # Realizar la búsqueda de parámetros
     dtr_gs.fit(X_train, y_train)
 
@@ -94,7 +94,7 @@ dtype_dict = {'Mech Not Defined': "uint8", 'Mech_Acting': "uint8", 'Mech_Action'
         }
 df = pd.read_csv("../data/processed/bgg_proc_ml.csv", dtype = dtype_dict)
 
-X = df[["BGG Rank","Complexity Average","Mech_role_camp","Strategy","Wargames"]]
+X = df.drop(["Name","Rating Average","Domains", "Mechanics"],axis=1)
 y = df["Rating Average"]
 
 
@@ -113,7 +113,7 @@ if selector == "M":
         time.sleep(5)
         
     if selector_2 == "A":
-        print("Entrenando modelo arbol de decision...")
+        print("Entrenando modelo arbol de decision... 30 min aprox")
         tree_dec_gs()
         print("Entrenamiento modelo arbol de decisión completado")
         time.sleep(5)
