@@ -5,7 +5,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 import pickle
 import time
@@ -14,7 +13,9 @@ import functions
 # Función de entrenamiento de modelos 
 
 def lin_reg_pol():
-    # ------------------------------------ Modelo lineal polinomio de grado 3 ---------------------------------------
+    #------------------------------------------------------------------------------------------------------------------
+    # ------------------------------------ Modelo lineal polinomio de grado 3 -----------------------------------------
+    #------------------------------------------------------------------------------------------------------------------
 
     # Caracteristicas de modelo
 
@@ -61,7 +62,9 @@ def lin_reg_pol():
 
 
 def tree_dec_gs():
+    #------------------------------------------------------------------------------------------------------------------
     # --------------------------------------------  Modelo decision tree ----------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------
 
     model_config_path_tree = "../models/arbol_decision/model_config_dtr.yaml"
 
@@ -69,17 +72,41 @@ def tree_dec_gs():
 
     X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= dtr_gs_model_conf['test_size'],random_state=dtr_gs_model_conf['random_state'])
 
+    # Crear el estimador DecisionTreeRegressor
+    model = DecisionTreeRegressor(random_state=5)
+
     # Crear el objeto GridSearchCV con la configuración cargada
-    pipeline = dtr_gs_model_conf['pipeline']
-    parameters = dtr_gs_model_conf['parameters']
-    dtr_gs = GridSearchCV(pipeline, parameters, cv=dtr_gs_model_conf['grid_search']['cv'], scoring=dtr_gs_model_conf['grid_search']['scoring'])
-   
+    dtr_gs = GridSearchCV(model, dtr_gs_model_conf['GridSearchCV']['param_grid'], cv=dtr_gs_model_conf['GridSearchCV']['cv'],
+                            scoring=dtr_gs_model_conf['GridSearchCV']['scoring'])
+
     # Realizar la búsqueda de parámetros
     dtr_gs.fit(X_train, y_train)
 
     # Subida del modelo.
     pickle.dump(dtr_gs, open('../models/arbol_decision/dtr_gs.pkl', 'wb'))
 
+def rnd_ft():
+    #------------------------------------------------------------------------------------------------------------------
+    #---------------------------------------------  Modelo Random Forest ----------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------
+    model_config_path_tree = "../models/random_forest/model_config_rnd_ft.yaml"
+
+    rnd_ft_model_conf = functions.load_config(model_config_path_tree)
+
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= rnd_ft_model_conf['test_size'],random_state=rnd_ft_model_conf['random_state'])
+
+    # Crear el estimador DecisionTreeRegressor
+    model = RandomForestRegressor()
+
+    # Crear el objeto GridSearchCV con la configuración cargada
+    rnd_ft = GridSearchCV(model, rnd_ft_model_conf['GridSearchCV']['param_grid'], cv=rnd_ft_model_conf['GridSearchCV']['cv'],
+                            scoring=rnd_ft_model_conf['GridSearchCV']['scoring'])
+
+    # Realizar la búsqueda de parámetros
+    rnd_ft.fit(X_train, y_train)
+
+    # Subida del modelo.
+    pickle.dump(rnd_ft, open('../models/random_forest/rnd_ft.pkl', 'wb'))
 
 #----------------------------------------------------------------
 # -----------------------   Carga df   --------------------------
@@ -105,7 +132,7 @@ y = df["Rating Average"]
 selector = input("¿Quieres un entrenar un modelo en particular(M) o quieres entrenar todos(Cualquier tecla)?:(M/Cualquier tecla)")
 
 if selector == "M":
-    selector_2 = input("¿Que módelo quieres entrenar? Lineal(L) -- Arbol de decision(A)")
+    selector_2 = input("¿Que módelo quieres entrenar? Lineal(L) (10seg) -- Arbol de decision(A) (10 min aprox) -- Random Forest(R) (3 min aprox)")
     if selector_2 == "L":
         print("Entrenando modelo lineal...")
         lin_reg_pol()
@@ -113,17 +140,33 @@ if selector == "M":
         time.sleep(5)
         
     if selector_2 == "A":
-        print("Entrenando modelo arbol de decision... 30 min aprox")
+        print("Entrenando modelo arbol de decision...")
+        print("10 minutos aproximadamente de entrenamiento...paciencia...")
         tree_dec_gs()
+        print("Entrenamiento modelo arbol de decisión completado")
+        time.sleep(5)
+    
+    if selector_2 == "R":
+        print("Entrenando modelo random forest...")
+        print("3 minutos aproximadamente de entrenamiento...paciencia...")
+        rnd_ft()
         print("Entrenamiento modelo arbol de decisión completado")
         time.sleep(5)
 
 else:
+    # Entrenamiento modelo lineal
     print("Entrenando modelo lineal...")
     lin_reg_pol()
     print("Entrenamiento modelo lineal completado")
-    print("Entrenando modelo arbol de decisión...")
+    # Entrenamiento modelo arbol
+    print("Entrenando modelo arbol de decision...")
+    print("10 minutos aproximadamente de entrenamiento...paciencia...")
     tree_dec_gs()
+    print("Entrenamiento modelo arbol de decisión completado")
+    # Entrenamiento modelo random forest
+    print("Entrenando modelo random forest...")
+    print("3 minutos aproximadamente de entrenamiento...paciencia...")
+    rnd_ft()
     print("Entrenamiento modelo arbol de decisión completado")
     time.sleep(5)
 

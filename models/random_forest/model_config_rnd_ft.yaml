@@ -1,0 +1,13 @@
+test_size: 0.2
+random_state: 5
+
+GridSearchCV:
+  estimator: sklearn.tree.RandomForestRegressor
+  param_grid:
+    n_estimators: [100,150]
+    max_depth: [20]
+    min_samples_split: [4,6]
+    min_samples_leaf: [5]
+    max_features: [21,23]
+  cv: 5
+  scoring: neg_mean_absolute_error
