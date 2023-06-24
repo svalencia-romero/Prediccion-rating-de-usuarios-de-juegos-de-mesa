@@ -14,3 +14,4 @@ def load_config(model_path):
     with open(model_path, 'r') as c:
         model = yaml.safe_load(c)
     return model
+  

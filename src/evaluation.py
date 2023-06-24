@@ -62,6 +62,19 @@ model_path = '../models/arbol_decision/dtr_gs.pkl'
 
 loaded_model_dtr_gs = functions.load_model(model_path)
 
+# Cargamos data test
+
+df_test = pd.read_csv('../data/test/test.csv')
+df_train = pd.read_csv('../data/train/train.csv')
+
+# Obtener las características (X_test) y las etiquetas (y_test)
+
+X_test = df_test.drop('Rating Average', axis=1)
+y_test = df_test['Rating Average']
+
+X_train = df_train.drop('Rating Average', axis=1)
+y_train = df_train['Rating Average']
+
 # Obtener el mejor modelo entrenado
 
 y_pred_dtr = loaded_model_dtr_gs.best_estimator_.predict(X_test)
