@@ -197,8 +197,11 @@ dtype_dict = {'Mech Not Defined': "uint8", 'Mech_Acting': "uint8", 'Mech_Action'
         }
 df = pd.read_csv("../data/processed/bgg_proc_ml.csv", dtype = dtype_dict)
 
-X = df.drop(["Name","Rating Average","Domains", "Mechanics"],axis=1)
-y = df["Rating Average"]
+X = df.drop(['ID','Name','Year Published','Rating Average','Users Rated','Mechanics','Domains'],axis=1)
+y = df['Rating Average']
+
+# X = df.drop(["Name","Rating Average","Domains", "Mechanics"],axis=1) --> Opcion con todo
+# y = df["Rating Average"]
 
 
 #----------------------------------------------------------------

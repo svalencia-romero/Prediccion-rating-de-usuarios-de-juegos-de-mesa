@@ -41,13 +41,13 @@ def main():
     #funcion para poner los parametros en el sidebar
     
     def user_input_parameters():
-        id = st.sidebar.slider("ID",0,1)
-        year_published = st.sidebar.slider("Year Published",1800,2010)
+        # id = st.sidebar.slider("ID",0,1)
+        # year_published = st.sidebar.slider("Year Published",1800,2010)
         min_players = st.sidebar.slider("Min Players",1,10)
         max_players = st.sidebar.slider("Max Players",1,999)
         play_time = st.sidebar.slider("Play Time",1,60000)
         min_age = st.sidebar.slider("Min Age",0,25)
-        users_rated = st.sidebar.slider("Users Rated",30,102214)
+        # users_rated = st.sidebar.slider("Users Rated",30,102214)
         bgg_rank = st.sidebar.slider("BGG Rank",1,20344)
         complejidad_juego = st.sidebar.slider("Complexity Average",0,5)
         owned_users = st.sidebar.slider("Owned Users",1,155312)
@@ -74,18 +74,15 @@ def main():
         strategy = st.sidebar.slider("Strategy",0,1)
         thematic = st.sidebar.slider("Thematic",0,1)
         wargames = st.sidebar.slider("Wargames",0,1)
-        domain_not_defined = st.sidebar.slider("Domain_Not Defined",0,1)
-        
-        
-        
-        
-        data ={"ID":id,
-               "Year Published":year_published,
+        domain_not_defined = st.sidebar.slider("Domain_Not Defined",0,1)      
+                
+        data ={#"ID":id,
+               #"Year Published":year_published,
                "Min Players":min_players,
                "Max Players":max_players,
                "Play Time":play_time,
                "Min Age":min_age,
-               "Users Rated":users_rated,
+               #"Users Rated":users_rated,
                "BGG Rank":bgg_rank,
                "Complexity Average":complejidad_juego,
                "Owned Users":owned_users,
