@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor,AdaBoostRegressor
+from sklearn.ensemble import RandomForestRegressor,AdaBoostRegressor,GradientBoostingRegressor
 import pickle
 import time
 import functions
@@ -107,6 +107,7 @@ def rnd_ft():
 
     # Subida del modelo.
     pickle.dump(rnd_ft, open('../models/random_forest/rnd_ft.pkl', 'wb'))
+
 def ada_gs():
     #------------------------------------------------------------------------------------------------------------------
     #---------------------------------------------  Modelo Ada Boost ----------------------------------------------
@@ -129,6 +130,29 @@ def ada_gs():
 
     # Subida del modelo.
     pickle.dump(rnd_ft, open('../models/ada_gs/ada_gs.pkl', 'wb'))
+
+def gbrt():
+    #------------------------------------------------------------------------------------------------------------------
+    #---------------------------------------------  Modelo Ada Boost ----------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------
+    model_config_path_tree = "../models/gbrt/model_config_gbrt.yaml"
+
+    gbrt_model_conf = functions.load_config(model_config_path_tree)
+
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= gbrt_model_conf['test_size'],random_state=gbrt_model_conf['random_state'])
+
+    # Crear el estimador DecisionTreeRegressor
+    model = GradientBoostingRegressor(random_state=5)
+
+    # Crear el objeto GridSearchCV con la configuración cargada
+    gbrt = GridSearchCV(model, gbrt_model_conf['GridSearchCV']['param_grid'], cv=gbrt_model_conf['GridSearchCV']['cv'],
+                            scoring=gbrt_model_conf['GridSearchCV']['scoring'])
+
+    # Realizar la búsqueda de parámetros
+    gbrt.fit(X_train, y_train)
+
+    # Subida del modelo.
+    pickle.dump(gbrt, open('../models/gbrt/gbrt.pkl', 'wb'))
 
 #----------------------------------------------------------------
 # -----------------------   Carga df   --------------------------
@@ -154,7 +178,7 @@ y = df["Rating Average"]
 selector = input("¿Quieres un entrenar un modelo en particular(M) o quieres entrenar todos(Cualquier tecla)?:(M/Cualquier tecla)")
 
 if selector == "M":
-    selector_2 = input("¿Que módelo quieres entrenar? Lineal(L) (10seg) -- Arbol de decision(D) (10 min aprox) -- Random Forest(R) (3 min aprox) -- Ada Boost(A) (3 min aprox)")
+    selector_2 = input("¿Que módelo quieres entrenar? \n Lineal(L) (10seg) \n Arbol de decision(D) (10 min aprox) \n Random Forest(R) (3 min aprox) \n Ada Boost(A) (3 min aprox) \n Gradient Boosting Regressor(G) (34 min aprox) \n (L\D\R\A\G): ")
     if selector_2 == "L":
         print("Entrenando modelo lineal...")
         lin_reg_pol()
@@ -182,6 +206,13 @@ if selector == "M":
         print("Entrenamiento modelo arbol de decisión completado")
         time.sleep(5)
     
+    if selector_2 == "G":
+        print("Entrenando modelo Gradient Boosting Regressor...")
+        print("34 minutos aproximadamente de entrenamiento...paciencia...")
+        gbrt()
+        print("Entrenamiento modelo Gradient Boosting Regressor completado")
+        time.sleep(5)
+    
     
 
 else:
@@ -204,6 +235,11 @@ else:
     print("3 minutos aproximadamente de entrenamiento...paciencia...")
     ada_gs()
     print("Entrenamiento modelo arbol de decisión completado")
+    # Entrenamiento modelo Gradient Boosting Regressor
+    print("Entrenando modelo Gradient Boosting Regressor...")
+    print("34 minutos aproximadamente de entrenamiento...paciencia...")
+    gbrt()
+    print("Entrenamiento modelo Gradient Boosting Regressor completado")
     time.sleep(5)
 
 
