@@ -1,6 +1,6 @@
-Métricas,Lineal Regression,Decision Tree Regressor,Random Forest,Ada Boost Regressor,Gradient Boosting Regressor
-MAE,0.3275,0.2205,0.1495,0.377,0.1373
-MAPE,0.0535,0.0348,0.0231,0.0597,0.021
-MSE,0.2633,0.1225,0.0651,0.2442,0.0608
-RMSE,0.5131,0.35,0.2552,0.4942,0.2465
-R2Score,0.6987,0.8598,0.9254,0.7205,0.9304
+Métricas,Lineal Regression,Decision Tree Regressor,Random Forest,Ada Boost Regressor,Gradient Boosting Regressor,PCA Random Forest Regressor
+MAE,0.3275,0.2205,0.1495,0.377,0.1373,0.2486
+MAPE,0.0535,0.0348,0.0231,0.0597,0.021,0.0387
+MSE,0.2633,0.1225,0.0651,0.2442,0.0608,0.1375
+RMSE,0.5131,0.35,0.2552,0.4942,0.2465,0.3707
+R2Score,0.6987,0.8598,0.9254,0.7205,0.9304,0.8427

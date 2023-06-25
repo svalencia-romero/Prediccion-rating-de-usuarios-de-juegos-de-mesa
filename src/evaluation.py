@@ -207,6 +207,45 @@ print("R-squared (R2) Score:", round(r2_gbrt,4),"\n")
 
 list_gbrt = [round(mae_gbrt,4),round(mape_gbrt,4),round(mse_gbrt,4),round(rmse_gbrt,4),round(r2_gbrt,4)]
 
+# Modelo PCA Random Forest Regressor
+
+# Carga de modelo
+
+model_path = '../models/pca_rf/pca_rf.pkl'
+
+loaded_model_pca_rf = functions.load_model(model_path)
+
+# Cargamos data test
+
+df_test = pd.read_csv('../data/test/test.csv')
+df_train = pd.read_csv('../data/train/train.csv')
+
+# Obtener las características (X_test) y las etiquetas (y_test)
+
+X_test = df_test.drop('Rating Average', axis=1)
+y_test = df_test['Rating Average']
+
+X_train = df_train.drop('Rating Average', axis=1)
+y_train = df_train['Rating Average']
+
+# Obtener el mejor modelo entrenado
+
+y_pred_pca_rf = loaded_model_pca_rf.best_estimator_.predict(X_test)
+
+mae_pca_rf = mean_absolute_error(y_test, y_pred_pca_rf)
+mape_pca_rf = mean_absolute_percentage_error(y_test, y_pred_pca_rf)
+mse_pca_rf = mean_squared_error(y_test, y_pred_pca_rf)
+rmse_pca_rf = mean_squared_error(y_test, y_pred_pca_rf, squared=False)
+r2_pca_rf = r2_score(y_test, y_pred_pca_rf)
+print("Métricas del modelo Gradient Boosting Regressor","\n")
+print("Mean Absolute Error (MAE):", round(mae_pca_rf,4))
+print("Mean Absolute Percentage Error (MAPE):", round(mape_pca_rf,4))
+print("Mean Squared Error (MSE):", round(mse_pca_rf,4))
+print("Root Mean Squared Error (RMSE):", round(rmse_pca_rf,4))
+print("R-squared (R2) Score:", round(r2_pca_rf,4),"\n")
+
+list_pca_rf = [round(mae_pca_rf,4),round(mape_pca_rf,4),round(mse_pca_rf,4),round(rmse_pca_rf,4),round(r2_pca_rf,4)]
+
 print("Evaluación Finalizada \n")
 pregunta = input("¿Quieres un csv con los resultados obtenidos? (S/N) ")
 if pregunta == "S" or pregunta == "s":
@@ -215,6 +254,7 @@ if pregunta == "S" or pregunta == "s":
     df_conc["Random Forest"] = list_rdm_fs
     df_conc["Ada Boost Regressor"] = list_ada_gs
     df_conc["Gradient Boosting Regressor"] = list_gbrt
+    df_conc["PCA Random Forest Regressor"] = list_pca_rf
     df_conc.to_csv("../data/processed/analisis_metricas.csv")
     print("CSV creado con éxito")
 

@@ -1,0 +1,19 @@
+test_size: 0.2
+random_state: 5
+
+steps:
+  - ['scaler', 'StandardScaler', {}]
+  - ['pca', 'PCA', {}]
+  - ['classifier', 'RandomForestRegressor', {'random_state':5}]
+
+params:
+  scaler:
+    - StandardScaler
+    - null
+  pca__n_components: [5, 6, 7]
+  classifier__max_depth: [10, 15, 20]
+  classifier__min_samples_leaf: [2, 3, 4]
+
+
+cv: 5
+scoring: neg_mean_squared_error

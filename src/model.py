@@ -2,13 +2,15 @@ import numpy as np
 import pandas as pd
 from sklearn import model_selection
 from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor,AdaBoostRegressor,GradientBoostingRegressor
 import pickle
 import time
 import functions
+from sklearn.pipeline import Pipeline
+from sklearn.decomposition import PCA
 
 # Función de entrenamiento de modelos 
 
@@ -133,7 +135,7 @@ def ada_gs():
 
 def gbrt():
     #------------------------------------------------------------------------------------------------------------------
-    #---------------------------------------------  Modelo Ada Boost ----------------------------------------------
+    #---------------------------------------------  Modelo Gradient Boosting Regressor---------------------------------
     #------------------------------------------------------------------------------------------------------------------
     model_config_path_tree = "../models/gbrt/model_config_gbrt.yaml"
 
@@ -153,6 +155,34 @@ def gbrt():
 
     # Subida del modelo.
     pickle.dump(gbrt, open('../models/gbrt/gbrt.pkl', 'wb'))
+
+def pca_rf():
+    #------------------------------------------------------------------------------------------------------------------
+    #---------------------------------------------  Modelo PCA con Random Forest --------------------------------------
+    #------------------------------------------------------------------------------------------------------------------
+    model_config_path_tree = "../models/pca_rf/model_config_pca_rf.yaml"
+
+    pca_rf_model_conf = functions.load_config(model_config_path_tree)
+
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= pca_rf_model_conf['test_size'],random_state=pca_rf_model_conf['random_state'])
+
+
+    # Configurar el pipeline
+    steps = []
+    for step_name, step_class, step_params in pca_rf_model_conf['steps']:
+        step_instance = eval(step_class)(**step_params) if step_params else eval(step_class)()
+        steps.append((step_name, step_instance))
+    pipe_gs = Pipeline(steps)
+
+    # Configurar la búsqueda de hiperparámetros
+    params = pca_rf_model_conf['params']
+    gs = GridSearchCV(pipe_gs, params, cv=pca_rf_model_conf['cv'], scoring=pca_rf_model_conf['scoring'])
+
+    # Entrenar y ajustar el modelo
+    gs.fit(X_train, y_train)
+
+    # Subida del modelo.
+    pickle.dump(gs, open('../models/pca_rf/pca_rf.pkl', 'wb'))
 
 #----------------------------------------------------------------
 # -----------------------   Carga df   --------------------------
@@ -178,7 +208,7 @@ y = df["Rating Average"]
 selector = input("¿Quieres un entrenar un modelo en particular(M) o quieres entrenar todos(Cualquier tecla)?:(M/Cualquier tecla)")
 
 if selector == "M":
-    selector_2 = input("¿Que módelo quieres entrenar? \n Lineal(L) (10seg) \n Arbol de decision(D) (10 min aprox) \n Random Forest(R) (3 min aprox) \n Ada Boost(A) (3 min aprox) \n Gradient Boosting Regressor(G) (34 min aprox) \n (L\D\R\A\G): ")
+    selector_2 = input("¿Que módelo quieres entrenar? \n Lineal(L) (10seg) \n Arbol de decision(D) (10 min aprox) \n Random Forest(R) (3 min aprox) \n Ada Boost(A) (3 min aprox) \n Gradient Boosting Regressor(G) (34 min aprox) \n PCA con Random Forest Regressor(P) \n (L\D\R\A\G\P): ")
     if selector_2 == "L":
         print("Entrenando modelo lineal...")
         lin_reg_pol()
@@ -212,6 +242,13 @@ if selector == "M":
         gbrt()
         print("Entrenamiento modelo Gradient Boosting Regressor completado")
         time.sleep(5)
+
+    if selector_2 == "P":
+        print("Entrenando modelo PCA con Random Forest Regressor ...")
+        print("15 minutos aproximadamente de entrenamiento...paciencia...")
+        pca_rf()
+        print("Entrenamiento modelo PCA con Random Forest Regressor completado")
+        time.sleep(5)
     
     
 
@@ -240,6 +277,11 @@ else:
     print("34 minutos aproximadamente de entrenamiento...paciencia...")
     gbrt()
     print("Entrenamiento modelo Gradient Boosting Regressor completado")
+    # Entrenamiento modelo PCA con Random Forest Regressor
+    print("Entrenando modelo PCA con Random Forest Regressor ...")
+    print("15 minutos aproximadamente de entrenamiento...paciencia...")
+    pca_rf()
+    print("Entrenamiento modelo PCA con Random Forest Regressor completado")
     time.sleep(5)
 
 
