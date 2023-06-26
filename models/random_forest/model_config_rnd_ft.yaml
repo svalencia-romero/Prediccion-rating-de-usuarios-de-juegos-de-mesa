@@ -1,5 +1,5 @@
-test_size: 0.2
-random_state: 5
+# test_size: 0.2
+# random_state: 5
 
 GridSearchCV:
   estimator: sklearn.tree.RandomForestRegressor

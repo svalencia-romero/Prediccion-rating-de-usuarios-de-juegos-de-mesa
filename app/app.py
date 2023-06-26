@@ -4,11 +4,11 @@ import pandas as pd
 # import base64
 # Extraer los archivos pickle 
 
-with open("../models/modelo_lineal/trained_pol_3.pkl", "rb") as li:
+with open("../models/modelo_lineal/trained_lin_reg.pkl", "rb") as li:
     lin_reg = pickle.load(li)
 
-with open("../models/modelo_lineal/transformacion_polinomio.pkl", "rb") as f:
-    transformacion = pickle.load(f)
+# with open("../models/modelo_lineal/transformacion_polinomio.pkl", "rb") as f:
+#     transformacion = pickle.load(f)
 
 with open("../models/arbol_decision/dtr_gs.pkl", "rb") as dtr:
     dtr_gs = pickle.load(dtr)
@@ -122,8 +122,8 @@ def main():
 
     if st.button("RUN"):
         if model == "Linear Regression":
-            df_transformado = transformacion.transform(df)
-            prediccion = lin_reg.predict(df_transformado)
+            # df_transformado = transformacion.transform(df)
+            prediccion = lin_reg.predict(df)
             st.success(prediccion)
         if model == "Decision Tree Regressor":
             prediccion = dtr_gs.best_estimator_.predict(df)
