@@ -7,9 +7,6 @@ import pandas as pd
 with open("../models/modelo_lineal/trained_lin_reg.pkl", "rb") as li:
     lin_reg = pickle.load(li)
 
-# with open("../models/modelo_lineal/transformacion_polinomio.pkl", "rb") as f:
-#     transformacion = pickle.load(f)
-
 with open("../models/arbol_decision/dtr_gs.pkl", "rb") as dtr:
     dtr_gs = pickle.load(dtr)
 
@@ -41,16 +38,13 @@ def main():
     #funcion para poner los parametros en el sidebar
     
     def user_input_parameters():
-        # id = st.sidebar.slider("ID",0,1)
-        # year_published = st.sidebar.slider("Year Published",1800,2010)
         min_players = st.sidebar.slider("Min Players",1,10)
-        max_players = st.sidebar.slider("Max Players",1,999)
-        play_time = st.sidebar.slider("Play Time",5,300)
+        max_players = st.sidebar.slider("Max Players",1,20)
+        play_time = st.sidebar.slider("Play Time",5,150)
         min_age = st.sidebar.slider("Min Age",0,25)
-        # users_rated = st.sidebar.slider("Users Rated",30,102214)
         bgg_rank = st.sidebar.slider("BGG Rank",1,20344)
         complejidad_juego = st.sidebar.slider("Complexity Average",0,5)
-        owned_users = st.sidebar.slider("Owned Users",1,155312)
+        owned_users = st.sidebar.slider("Owned Users",1,150000)
         mech_not_defined = st.sidebar.slider("Mech Not Defined",0,1)
         mech_acting = st.sidebar.slider("Mech_Acting",0,1)
         mech_action = st.sidebar.slider("Mech_Action",0,1)
@@ -122,7 +116,6 @@ def main():
 
     if st.button("RUN"):
         if model == "Linear Regression":
-            # df_transformado = transformacion.transform(df)
             prediccion = lin_reg.predict(df)
             st.success(prediccion)
         if model == "Decision Tree Regressor":
