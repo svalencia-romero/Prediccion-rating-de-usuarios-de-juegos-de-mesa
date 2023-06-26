@@ -19,21 +19,21 @@ y_test = df_test['Rating Average']
 
 # Cargamos el modelo entrenado y sus caracteristicas para arreglar con conversion polinómica.
 
-model_path = '../models/modelo_lineal/trained_pol_3.pkl'
+model_path = '../models/modelo_lineal/trained_lin_reg.pkl'
 
 loaded_model_lin = functions.load_model(model_path)
 
 # Conversión a polinomica, cargo el pickle hecho
 
-pol_path_mod = '../models/modelo_lineal/transformacion_polinomio.pkl'
+# pol_path_mod = '../models/modelo_lineal/transformacion_polinomio.pkl'
 
-poly_feats = functions.load_model(pol_path_mod)
+# poly_feats = functions.load_model(pol_path_mod)
 
-X_test_poly = poly_feats.transform(X_test)
+# X_test_poly = poly_feats.transform(X_test)
 
 # Realizar las predicciones
 
-predictions = loaded_model_lin.predict(X_test_poly)
+predictions = loaded_model_lin.predict(X_test)
 
 # Calcular las métricas de evaluación
 

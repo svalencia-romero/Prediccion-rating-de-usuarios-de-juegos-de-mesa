@@ -1,4 +1,2 @@
-model_name: LinearRegression
-degree: 2
 test_size: 0.2
 random_state: 5

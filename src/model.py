@@ -14,9 +14,9 @@ from sklearn.decomposition import PCA
 
 # Función de entrenamiento de modelos 
 
-def lin_reg_pol():
+def lin_reg():
     #------------------------------------------------------------------------------------------------------------------
-    # ------------------------------------ Modelo lineal polinomio de grado 3 -----------------------------------------
+    # ------------------------------------ Modelo lineal  -----------------------------------------
     #------------------------------------------------------------------------------------------------------------------
 
     # Caracteristicas de modelo
@@ -30,14 +30,15 @@ def lin_reg_pol():
 
     X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= lin_model_conf['test_size'],random_state=lin_model_conf['random_state'])
 
-    poly_feats = PolynomialFeatures(degree = lin_model_conf['degree'])
-    poly_feats.fit(X_train)
+    lin_reg = LinearRegression()
+    
+    lin_reg.fit(X_train,y_train)
 
-    # Salvamos el modelo polinomico para después utilizarlo
-    pickle.dump(poly_feats, open('../models/modelo_lineal/transformacion_polinomio.pkl', 'wb'))
+    # # Salvamos el modelo polinomico para después utilizarlo
+    # pickle.dump(poly_feats, open('../models/modelo_lineal/transformacion_polinomio.pkl', 'wb'))
     
 
-    X_train_poly = poly_feats.transform(X_train)
+    # X_train_poly = poly_feats.transform(X_train)
 
     #Transformador Data Frame de Train y test
 
@@ -53,14 +54,14 @@ def lin_reg_pol():
 
     # Modelo lineal
 
-    lin_reg = LinearRegression()
+    # lin_reg = LinearRegression()
     
     # Entrenamiento del modelo
 
-    lin_reg.fit(X_train_poly, y_train)
+    # lin_reg.fit(X_train_poly, y_train)
 
     # Subida del modelo.
-    pickle.dump(lin_reg, open('../models/modelo_lineal/trained_pol_3.pkl', 'wb'))
+    pickle.dump(lin_reg, open('../models/modelo_lineal/trained_lin_reg.pkl', 'wb'))
 
 
 def tree_dec_gs():
@@ -214,7 +215,7 @@ if selector == "M":
     selector_2 = input("¿Que módelo quieres entrenar? \n Lineal(L) (10seg) \n Arbol de decision(D) (10 min aprox) \n Random Forest(R) (3 min aprox) \n Ada Boost(A) (3 min aprox) \n Gradient Boosting Regressor(G) (34 min aprox) \n PCA con Random Forest Regressor(P) \n (L\D\R\A\G\P): ")
     if selector_2 == "L":
         print("Entrenando modelo lineal...")
-        lin_reg_pol()
+        lin_reg()
         print("Entrenamiento modelo lineal completado")
         time.sleep(5)
         
@@ -258,7 +259,7 @@ if selector == "M":
 else:
     # Entrenamiento modelo lineal
     print("Entrenando modelo lineal...")
-    lin_reg_pol()
+    lin_reg()
     print("Entrenamiento modelo lineal completado")
     # Entrenamiento modelo arbol
     print("Entrenando modelo arbol de decision...")
