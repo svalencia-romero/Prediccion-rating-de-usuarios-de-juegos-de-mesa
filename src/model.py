@@ -206,7 +206,6 @@ y = df['Rating Average']
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= 0.20 ,random_state=5)
 
 df_train = pd.DataFrame(X_train)
-# df_train['Rating Average'] = y_train
 
 df_test = pd.DataFrame(X_test)
 df_test['Rating Average'] = y_test

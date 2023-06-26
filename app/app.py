@@ -45,7 +45,7 @@ def main():
         # year_published = st.sidebar.slider("Year Published",1800,2010)
         min_players = st.sidebar.slider("Min Players",1,10)
         max_players = st.sidebar.slider("Max Players",1,999)
-        play_time = st.sidebar.slider("Play Time",1,60000)
+        play_time = st.sidebar.slider("Play Time",5,300)
         min_age = st.sidebar.slider("Min Age",0,25)
         # users_rated = st.sidebar.slider("Users Rated",30,102214)
         bgg_rank = st.sidebar.slider("BGG Rank",1,20344)
