@@ -11,6 +11,9 @@ import time
 import functions
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import PCA
+import warnings
+
+warnings.simplefilter("ignore")
 
 # Función de entrenamiento de modelos 
 
