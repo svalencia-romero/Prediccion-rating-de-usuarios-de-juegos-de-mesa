@@ -35,9 +35,9 @@ def user_input_parameters():
             max_players = st.sidebar.slider("Máximo número de jugadores",1,20)
             play_time = st.sidebar.slider("Tiempo de juego aproximado",5,150)
             min_age = st.sidebar.slider("Edad mínima",0,25)
-            bgg_rank = st.sidebar.slider("Rango en BGG",1,20344)
+            bgg_rank = st.sidebar.slider("Rango aproximado en BGG que crees que puede tener",1,20344,step=1)
             complejidad_juego = st.sidebar.slider("Grado de complejidad",0,5)
-            owned_users = st.sidebar.slider("Usuarios que aproximadamente tienen el juego",1,150000)
+            owned_users = st.sidebar.slider("Usuarios que aproximadamente tienen el juego",1,150000,step=1)
             mech_not_defined = st.sidebar.slider("Mecanicas no definidas",0,1)
             mech_acting = st.sidebar.slider("Mecanicas de acting",0,1)
             mech_action = st.sidebar.slider("Mecanicas de acción",0,1)
@@ -127,15 +127,16 @@ def main():
                 cost_per_rank = 1
             else:
                 cost_per_rank = 10
+            
             coste_de_juego = st.number_input("¿Cuanto va a costar tu juego en la tienda?",value=25,step=1) # Coste
             
             cost_per_user_tienda = coste_de_juego * 0.20 # Lo que se lleva la tienda por juego vendido.
             
-            coste_manuf_game = st.number_input("¿Cuanto vas a invertir en fabricar tu juego?",value=2000,step=1)
+            coste_manuf_game = st.number_input("¿Cuanto dinero tienes previsto invertir en fabricar tu juego?",value=2000,step=1)
             
             gan_per_game = (coste_de_juego * 0.80) - cost_per_rank # Lo que se lleva el cliente por juegos.
             
-            gan_game_overall = (df["Owned Users"].values[0] * gan_per_game) 
+            gan_game_overall = (df["Owned Users"].values[0] * gan_per_game)  - coste_manuf_game
             
             inv_rank = 20345 - df["BGG Rank"].values[0]
             
@@ -161,9 +162,9 @@ def main():
             max_players = st.sidebar.slider("Máximo número de jugadores",1,20)
             play_time = st.sidebar.slider("Tiempo de juego aproximado",5,150)
             min_age = st.sidebar.slider("Edad mínima",0,25)
-            bgg_rank = st.sidebar.slider("Rango en BGG",1,20344)
+            bgg_rank = st.sidebar.slider("Rango en BGG",1,20344,1)
             complejidad_juego = st.sidebar.slider("Grado de complejidad",0,5)
-            owned_users = st.sidebar.slider("Usuarios que aproximadamente tienen el juego",1,150000)
+            owned_users = st.sidebar.slider("Usuarios que aproximadamente tienen el juego",1,150000,1)
             mech_not_defined = st.sidebar.slider("Mecanicas no definidas",0,1)
             mech_acting = st.sidebar.slider("Mecanicas de acting",0,1)
             mech_action = st.sidebar.slider("Mecanicas de acción",0,1)
