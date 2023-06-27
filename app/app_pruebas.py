@@ -113,18 +113,37 @@ def main():
     # Página para científicos de datos
     def user_page():
         st.title("Página para clientes")
-        show_money = st.checkbox("Mostrar/ocultar dinero invertido")                       
-        df = user_input_parameters()      
-        if show_money: # Con esto tendremos un nivel de dinero
+        show_money = st.checkbox("Mostrar/ocultar dinero invertido")
+        show_rating = st.checkbox("Mostrar/ocultar rating de usuarios") 
+        df = user_input_parameters()                       
+        
+        if show_rating:
+            prediccion = rnd_ft.best_estimator_.predict(df)
+            st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))      
+        
+        if show_money: # Con esto tendremos un nivel de dinero de inversión en marketing
+            
             if df["BGG Rank"].values[0] > 10000:
                 cost_per_rank = 1
             else:
-                cost_per_rank = 15
-            coste_de_juego = st.number_input("¿Cuanto va a costar tu juego?",value=25,step=1)
-            cost_per_user = coste_de_juego * 0.20 # Lo que se lleva la tienda por juego, es un valor ficticio.
+                cost_per_rank = 10
+            coste_de_juego = st.number_input("¿Cuanto va a costar tu juego en la tienda?",value=25,step=1) # Coste
+            
+            cost_per_user_tienda = coste_de_juego * 0.20 # Lo que se lleva la tienda por juego vendido.
+            
+            coste_manuf_game = st.number_input("¿Cuanto vas a invertir en fabricar tu juego?",value=2000,step=1)
+            
+            gan_per_game = (coste_de_juego * 0.80) - cost_per_rank # Lo que se lleva el cliente por juegos.
+            
+            gan_game_overall = (df["Owned Users"].values[0] * gan_per_game) 
+            
             inv_rank = 20345 - df["BGG Rank"].values[0]
-            total_cost = inv_rank * cost_per_rank + df["Owned Users"].values[0] * cost_per_user
-            st.write("Las tiendas reciben el 20 % de las ventas de cada juego")
+            
+            total_cost = inv_rank * cost_per_rank + df["Owned Users"].values[0] * cost_per_user_tienda
+            
+            st.write("Dinero obtenido por cada juego:", round(gan_per_game, 2),"€")
+            st.write("Total del dinero por todos los juegos:", round(gan_game_overall, 2),"€")
+            st.write("Estimación realizada si tiendas reciben el 20 % de las ventas de cada juego")
             st.write("El coste aproximado total de publicidad es de :", round(total_cost, 2),"€")
 
     def data_scientist_page():
@@ -208,7 +227,9 @@ def main():
             return features
                 
         df = user_input_parameters()
+        
         if show_money: # Con esto tendremos un nivel de dinero
+            
             if df["BGG Rank"].values[0] > 10000:
                 cost_per_rank = 1
             else:
@@ -217,10 +238,13 @@ def main():
             cost_per_user = coste_de_juego * 0.20 # Lo que se lleva la tienda por juego, es un valor ficticio.
             inv_rank = 20345 - df["BGG Rank"].values[0]
             total_cost = inv_rank * cost_per_rank + df["Owned Users"].values[0] * cost_per_user
-            st.write("Las tiendas reciben el 20 % de las ventas de cada juego")
+            
+            st.write("Estimación realizada si las tiendas reciben el 20 % de las ventas de cada juego")
             st.write("El coste aproximado total de publicidad es de :", round(total_cost, 2),"€")
+
         if show_dataframe:
-                st.dataframe(df_errores)      
+                st.dataframe(df_errores)  
+
         if show_rating:
             if model == "Linear Regression":
                     prediccion = lin_reg.predict(df)
@@ -240,6 +264,7 @@ def main():
             if model == "PCA con Random Forest Regressor":
                     prediccion = pca_rf.best_estimator_.predict(df)
                     st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
+
     page = st.sidebar.selectbox("Selecciona una página", ("Usuarios", "Científicos de Datos"))    
     if page == "Usuarios":
         user_page()
