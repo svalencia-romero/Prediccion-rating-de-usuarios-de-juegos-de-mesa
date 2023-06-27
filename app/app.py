@@ -5,7 +5,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import yaml 
-# Carga de configuraciones de los modelos
+st.set_option('deprecation.showPyplotGlobalUse', False)
+# Carga de configuraciones de los modelos y test
+
+df_test = pd.read_csv('../data/test/test.csv')
+df_ml_original = pd.read_csv('../data/processed/bgg_proc_ml.csv')
+
+# Obtener las características (X_test) y las etiquetas (y_test)
+
+X_test = df_test.drop('Rating Average', axis=1)
+y_test = df_test['Rating Average']
+
+correlation_matrix = df_ml_original.corr()
 
 with open("../models/arbol_decision/model_config_dtr.yaml", "r") as file:
     model_cfg_dtr = yaml.safe_load(file)
@@ -44,6 +55,37 @@ with open("../models/pca_rf/pca_rf.pkl", "rb") as pca:
 df_errores = pd.read_csv("../data/processed/analisis_metricas.csv",index_col="Métricas")
 
 st.set_page_config(layout="wide")
+
+#Función graficas errores 
+
+# Crear la gráfica
+def grafica(predicciones,titulo):
+    sns.set(style="darkgrid")
+    fig, ax = plt.subplots()
+    ax.scatter(y_test, predicciones, color='blue', label='Valores de prueba vs. Valores predichos')
+    ax.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'r--')  # Línea de referencia: valores reales = valores predichos
+    ax.scatter(y_test, y_test, color='red', label='Valores de prueba')
+    ax.set_xlabel('Valores de prueba')
+    ax.set_ylabel('Valores predichos')
+    ax.set_title(titulo)
+    ax.legend()
+    st.pyplot(plt)
+
+def mtx_corr():
+    correlation_matrix = df_ml_original.corr()
+
+    # Mostrar la matriz de correlación en Streamlit
+    st.write("Matriz de correlación:")
+    st.write(correlation_matrix)
+
+def grf_corr():
+
+    # Crear una visualización de la matriz de correlación utilizando un mapa de calor
+    plt.figure(figsize=(30, 15))
+    sns.heatmap(correlation_matrix, annot=True, cmap="viridis")
+    plt.title("Matriz de correlación")
+    st.pyplot()
+
 
 # Funcion principal del dataframe que vamos modificando con slides
 
@@ -166,23 +208,55 @@ def main():
 
         show_dataframe = st.checkbox("Mostrar/ocultar Data Frame con errores de cada modelo")
         show_rating = st.checkbox("Mostrar/ocultar rating de usuarios")
-        # show_grafs = st.checkbox("Mostrar/ocultar graficas")
+        show_grafs = st.checkbox("Graficas valores de prueba vs valores predichos")
         show_config = st.checkbox("Mostrar/ocultar configuraciones de modelos")
+        show_corr_mat = st.checkbox("Mostrar/ocultar matriz de correlación")
+        show_corr_map = st.checkbox("Mostrar/ocultar mapa de correlación")
         
-        # show_grafs
-                
+        if show_corr_map:
+            grf_corr()
+        if show_corr_mat:
+            mtx_corr()
+        
+        if show_grafs:
+            pred_rnd_ft = rnd_ft.predict(X_test)
+            pred_lin = lin_reg.predict(X_test)
+            pred_ada = ada_gs.predict(X_test)
+            pred_gbr = gbrt.predict(X_test)
+            pred_pca = pca_rf.predict(X_test)
+            pred_dtr = dtr_gs.predict(X_test)
+
+            graf_options = ["Regresion lineal",
+                "Decision Tree Regressor",
+                "Ada Boost Regressor",
+                "Gradient Boosting Regressor",
+                "PCA con Random Forest Regressor",
+                "Random Forest Regressor"
+                ]
+            graf = st.selectbox("Seleccionar configuración", graf_options)        
+            if graf == "Regresion lineal":
+                grafica(pred_lin,"Regresion lineal") 
+            if graf == "Decision Tree Regressor":   
+                grafica(pred_dtr,"Decision Tree Regressor")
+            if graf == "Ada Boost Regressor":
+                grafica(pred_ada,"Ada Boost Regressor")
+            if graf == "Gradient Boosting Regressor":
+                grafica(pred_gbr,"Gradient Boosting Regressor")
+            if graf == "PCA con Random Forest Regressor":
+                grafica(pred_pca,"PCA con Random Forest Regressor")
+            if graf == "Random Forest Regressor":
+                grafica(pred_rnd_ft,"Random Forest Regressor")  
+        
         df = user_input_parameters()
         
-        cfg_options = ["Decision Tree Regressor",
-            "Ada Boost Regressor",
-            "Gradient Boosting Regressor",
-            "PCA con Random Forest Regressor",
-            "Random Forest Regressor"
-            ]
-
-        cfg = st.selectbox("Seleccionar configuración", cfg_options)
-
         if show_config:
+            cfg_options = ["Decision Tree Regressor",
+                "Ada Boost Regressor",
+                "Gradient Boosting Regressor",
+                "PCA con Random Forest Regressor",
+                "Random Forest Regressor"
+                ]
+            cfg = st.selectbox("Seleccionar configuración", cfg_options)        
             if cfg == "Decision Tree Regressor":   
                 st.write(model_cfg_dtr)
             if cfg == "Ada Boost Regressor":
@@ -193,8 +267,7 @@ def main():
                 st.write(model_cfg_pca_rf)
             if cfg == "Random Forest Regressor":
                 st.write(model_cfg_rnd_ft)
-
-            
+   
         if show_dataframe:
                 st.dataframe(df_errores)  
 

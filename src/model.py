@@ -75,8 +75,6 @@ def tree_dec_gs():
 
     dtr_gs_model_conf = functions.load_config(model_config_path_tree)
 
-    # X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= dtr_gs_model_conf['test_size'],random_state=dtr_gs_model_conf['random_state'])
-
     # Crear el estimador DecisionTreeRegressor
     model = DecisionTreeRegressor(random_state=5)
 
@@ -97,8 +95,6 @@ def rnd_ft():
     model_config_path_tree = "../models/random_forest/model_config_rnd_ft.yaml"
 
     rnd_ft_model_conf = functions.load_config(model_config_path_tree)
-
-    # X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= rnd_ft_model_conf['test_size'],random_state=rnd_ft_model_conf['random_state'])
 
     # Crear el estimador DecisionTreeRegressor
     model = RandomForestRegressor(random_state=5)
@@ -121,8 +117,6 @@ def ada_gs():
 
     ada_gs_model_conf = functions.load_config(model_config_path_tree)
 
-    # X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= ada_gs_model_conf['test_size'],random_state=ada_gs_model_conf['random_state'])
-
     # Crear el estimador DecisionTreeRegressor
     model = AdaBoostRegressor(random_state=5)
 
@@ -144,8 +138,6 @@ def gbrt():
 
     gbrt_model_conf = functions.load_config(model_config_path_tree)
 
-    # X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= gbrt_model_conf['test_size'],random_state=gbrt_model_conf['random_state'])
-
     # Crear el estimador DecisionTreeRegressor
     model = GradientBoostingRegressor(random_state=5)
 
@@ -166,9 +158,6 @@ def pca_rf():
     model_config_path_tree = "../models/pca_rf/model_config_pca_rf.yaml"
 
     pca_rf_model_conf = functions.load_config(model_config_path_tree)
-
-    # X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= pca_rf_model_conf['test_size'],random_state=pca_rf_model_conf['random_state'])
-
 
     # Configurar el pipeline
     steps = []
@@ -202,9 +191,6 @@ df = pd.read_csv("../data/processed/bgg_proc_ml.csv", dtype = dtype_dict)
 
 X = df.drop(['ID','Name','Year Published','Rating Average','Users Rated','Mechanics','Domains'],axis=1)
 y = df['Rating Average']
-
-# X = df.drop(["Name","Rating Average","Domains", "Mechanics"],axis=1) --> Opcion con todo
-# y = df["Rating Average"]
 
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= 0.20 ,random_state=5)
 
