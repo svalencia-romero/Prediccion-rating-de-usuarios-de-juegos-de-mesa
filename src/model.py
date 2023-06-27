@@ -205,9 +205,22 @@ y = df['Rating Average']
 
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= 0.20 ,random_state=5)
 
-df_train = pd.DataFrame(X_train)
+df_train = pd.DataFrame(X_train, columns=['Min Players', 'Max Players', 'Play Time', 'Min Age', 'BGG Rank',
+       'Complexity Average', 'Owned Users', 'Mech Not Defined', 'Mech_Acting',
+       'Mech_Action', 'Mech_tokens', 'Mech_construcc_farm', 'Mech_roll_thng',
+       'Mech_cards', 'Mech_role_camp', 'Mech_board', 'Mech_money',
+       'Mech_score', 'Mech_turnbased', 'Mech_team', 'Mech_skill', 'Mech_solo',
+       'Abstract', 'Children', 'Customizable', 'Family', 'Party', 'Strategy',
+       'Thematic', 'Wargames', 'Domain_Not Defined'])
+df_train['Rating Average'] = y_train
 
-df_test = pd.DataFrame(X_test)
+df_test = pd.DataFrame(X_test, columns=['Min Players', 'Max Players', 'Play Time', 'Min Age', 'BGG Rank',
+       'Complexity Average', 'Owned Users', 'Mech Not Defined', 'Mech_Acting',
+       'Mech_Action', 'Mech_tokens', 'Mech_construcc_farm', 'Mech_roll_thng',
+       'Mech_cards', 'Mech_role_camp', 'Mech_board', 'Mech_money',
+       'Mech_score', 'Mech_turnbased', 'Mech_team', 'Mech_skill', 'Mech_solo',
+       'Abstract', 'Children', 'Customizable', 'Family', 'Party', 'Strategy',
+       'Thematic', 'Wargames', 'Domain_Not Defined'])
 df_test['Rating Average'] = y_test
 
 df_train.to_csv('../data/train/train.csv', index=False)
@@ -220,7 +233,7 @@ df_test.to_csv('../data/test/test.csv', index=False)
 selector = input("¿Quieres un entrenar un modelo en particular(M) o quieres entrenar todos(Cualquier tecla)?:(M/Cualquier tecla)")
 
 if selector == "M":
-    selector_2 = input("¿Que módelo quieres entrenar? \n Lineal(L) (10seg) \n Arbol de decision(D) (10 min aprox) \n Random Forest(R) (3 min aprox) \n Ada Boost(A) (3 min aprox) \n Gradient Boosting Regressor(G) (34 min aprox) \n PCA con Random Forest Regressor(P) \n (L\D\R\A\G\P): ")
+    selector_2 = input("¿Que módelo quieres entrenar? \n Lineal(L) (10seg) \n Arbol de decision(D) (10 min aprox) \n Random Forest(R) (3 min aprox) \n Ada Boost(A) (3 min aprox) \n Gradient Boosting Regressor(G) (10 min aprox) \n PCA con Random Forest Regressor(P) \n (L\D\R\A\G\P): ")
     if selector_2 == "L":
         print("Entrenando modelo lineal...")
         lin_reg()
@@ -250,7 +263,7 @@ if selector == "M":
     
     if selector_2 == "G":
         print("Entrenando modelo Gradient Boosting Regressor...")
-        print("34 minutos aproximadamente de entrenamiento...paciencia...")
+        print("10 minutos aproximadamente de entrenamiento...paciencia...")
         gbrt()
         print("Entrenamiento modelo Gradient Boosting Regressor completado")
         time.sleep(5)
@@ -286,7 +299,7 @@ else:
     print("Entrenamiento modelo arbol de decisión completado")
     # Entrenamiento modelo Gradient Boosting Regressor
     print("Entrenando modelo Gradient Boosting Regressor...")
-    print("34 minutos aproximadamente de entrenamiento...paciencia...")
+    print("10 minutos aproximadamente de entrenamiento...paciencia...")
     gbrt()
     print("Entrenamiento modelo Gradient Boosting Regressor completado")
     # Entrenamiento modelo PCA con Random Forest Regressor
