@@ -230,14 +230,15 @@ correlation_matrix = df_ml_original.corr()
 
 def main():    
     # Titulo
-    st.title("Modelo Predictivo de Juegos de Mesa")
+    st.title("Predicción deñ Rating de Juegos de Mesa")
     st.image(os.path.join(dir_path,"..","img","board.jpg"), width=650)
     st.write("¡Bienvenido!")
     # Página para científicos de datos
     def user_page():
-        st.title("Página para cliente final")
+        st.title("Escoja la opción que desee")
         st.write()
-        show_money = st.checkbox("En este apartado podrás comprobar diferentes cuestiones economicas importantes sobre tu juego.")
+        show_money = st.checkbox("En este apartado podrás comprobar diferentes cuestiones economicas importantes sobre tu juego de mesa.")
+        st.write('Primero selecciona las caracteristicas de tu juego de mesa y despues pincha en la pestaña')
         show_rating = st.checkbox("Prediccion de rating de usuarios")                  
         if show_rating:
             prediccion = rnd_ft.best_estimator_.predict(df)
@@ -258,8 +259,8 @@ def main():
             inv_rank = 20345 - df["BGG Rank"].values[0]
             total_cost = inv_rank * cost_per_rank + df["Owned Users"].values[0] * cost_per_user_tienda
             st.write("Dinero obtenido por cada juego:", round(gan_per_game, 2),"€")
-            st.write("Total del dinero por todos los juegos:", round(gan_game_overall, 2),"€")
-            st.write("Estimación realizada si tiendas reciben el 20 % de las ventas de cada juego")
+            st.write('*Estimación realizada si las tiendas reciben el 20 % de las ventas de cada juego')
+            st.write("Total del dinero ganado con el juego:", round(gan_game_overall, 2),"€")
             st.write("El coste aproximado total de publicidad es de :", round(total_cost, 2),"€")
 
     def data_scientist_page():
