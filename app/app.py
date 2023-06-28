@@ -6,70 +6,74 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import yaml 
 from sklearn.preprocessing import PolynomialFeatures
+import os
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
+
 # Carga de configuraciones de los modelos y test
 
-df_test = pd.read_csv('../data/test/test.csv')
-df_ml_original = pd.read_csv('../data/processed/bgg_proc_ml.csv')
+df_test = pd.read_csv(os.path.join(dir_path, "..", "data", "test", "test.csv"))
+df_ml_original = pd.read_csv(os.path.join(dir_path, "..", "data", "processed", "bgg_proc_ml.csv"))
 
 # Obtener las características (X_test) y las etiquetas (y_test)
 
 X_test = df_test.drop('Rating Average', axis=1)
 y_test = df_test['Rating Average']
 
-df_train = pd.read_csv('../data/train/train.csv')
+df_train = pd.read_csv(os.path.join(dir_path, "..", "data", "train", "train.csv"))
 X_train = df_train.drop('Rating Average', axis=1)
 
 # Carga de configuraciones
 
-with open("../models/bagging_regressor/model_config_bag_gs.yaml", "r") as file:
+with open(os.path.join(dir_path,"..","models","bagging_regressor","model_config_bag_gs.yaml"), "r") as file:
     model_bag = yaml.safe_load(file)
 
-with open("../models/modelo_lineal/model_config_lin.yaml", "r") as file:
+with open(os.path.join(dir_path,"..","models","modelo_lineal","model_config_lin.yaml"),"r") as file:
     model_lin = yaml.safe_load(file)
 
-with open("../models/arbol_decision/model_config_dtr.yaml", "r") as file:
+with open(os.path.join(dir_path,"..","models","arbol_decision","model_config_dtr.yaml"), "r") as file:
     model_cfg_dtr = yaml.safe_load(file)
 
-with open("../models/gbrt/model_config_gbrt.yaml", "r") as file:
+with open(os.path.join(dir_path,"..","models","gbrt","model_config_gbrt.yaml"), "r") as file:
     model_cfg_gbrt = yaml.safe_load(file)
 
-with open("../models/pca_rf/model_config_pca_rf.yaml", "r") as file:
+with open(os.path.join(dir_path,"..","models","pca_rf","model_config_pca_rf.yaml"), "r")as file:
     model_cfg_pca_rf = yaml.safe_load(file)
 
-with open("../models/random_forest/model_config_rnd_ft.yaml", "r") as file:
+with open(os.path.join(dir_path,"..","models","random_forest","model_config_rnd_ft.yaml"), "r") as file:
     model_cfg_rnd_ft = yaml.safe_load(file)
 
-with open("../models/ada_gs/model_config_ada_gs.yaml", "r") as file:
+with open(os.path.join(dir_path,"..","models","ada_gs","model_config_ada_gs.yaml"), "r") as file:
     model_cfg_ada_gs = yaml.safe_load(file)
 
 # Carga de modelos
-with open("../models/bagging_regressor/bar_reg.pkl", "rb") as li:
+with open(os.path.join(dir_path, "..", "models", "bagging_regressor", "bar_reg.pkl"),"rb") as li:
     bag_reg = pickle.load(li)
 
-with open("../models/modelo_lineal/trained_pol_3.pkl", "rb") as li:
+with open(os.path.join(dir_path, "..", "models", "modelo_lineal", "trained_pol_3.pkl"),"rb") as li:
     lin_reg = pickle.load(li)
 
-with open("../models/modelo_lineal/transformacion_polinomio.pkl", "rb") as f:
+with open(os.path.join(dir_path, "..", "models", "modelo_lineal", "transformacion_polinomio.pkl"),"rb") as f:
     transformacion = pickle.load(f)
 
-with open("../models/arbol_decision/dtr_gs.pkl", "rb") as dtr:
+with open(os.path.join(dir_path, "..", "models", "arbol_decision", "dtr_gs.pkl"),"rb") as dtr:
     dtr_gs = pickle.load(dtr)
 
-with open("../models/random_forest/rnd_ft.pkl", "rb") as dtr:
+with open(os.path.join(dir_path, "..", "models", "random_forest", "rnd_ft.pkl"),"rb") as dtr:
     rnd_ft = pickle.load(dtr)    
 
-with open("../models/ada_gs/ada_gs.pkl", "rb") as ada:
+with open(os.path.join(dir_path, "..", "models", "ada_gs", "ada_gs.pkl"),"rb") as ada:
     ada_gs = pickle.load(ada)
 
-with open("../models/gbrt/gbrt.pkl", "rb") as gbrt:
+with open(os.path.join(dir_path, "..", "models", "gbrt", "gbrt.pkl"),"rb") as gbrt:
     gbrt = pickle.load(gbrt)
 
-with open("../models/pca_rf/pca_rf.pkl", "rb") as pca:
+with open(os.path.join(dir_path, "..", "models", "pca_rf", "pca_rf.pkl"),"rb") as pca:
     pca_rf = pickle.load(pca)
 
-df_errores = pd.read_csv("../data/processed/analisis_metricas.csv",index_col="Métricas")
+df_errores = pd.read_csv(os.path.join(dir_path, "..", "data", "processed", "analisis_metricas.csv"),index_col="Métricas")
 
 
 
@@ -185,7 +189,7 @@ correlation_matrix = df_ml_original.corr()
 def main():    
     # Titulo
     st.title("Modelo Predictivo de Juegos de Mesa")
-    st.image("../img/board.jpg", width=650)
+    st.image(os.path.join(dir_path,"..","img","board.jpg"), width=650)
     st.write("¡Bienvenido!")
     # Página para científicos de datos
     def user_page():
