@@ -188,7 +188,7 @@ correlation_matrix = df_ml_original.corr()
 def main():    
     # Titulo
     st.title("Modelo Predictivo de Juegos de Mesa")
-    st.image("../img/board.jpg", width=650)
+    st.image(os.path.join(dir_path,"..","img","board.jpg"), width=650)
     st.write("¡Bienvenido!")
     # Página para científicos de datos
     def user_page():
