@@ -255,7 +255,7 @@ def main():
                 "Random Forest Regressor"
                 ]
             graf = st.selectbox("Seleccionar grafico", graf_options)
-            if graf == pred_bag:
+            if graf == "Bagging Regressor":
                 grafica(pred_bag,"Bagging Regressor")         
             if graf == "Regresion lineal":
                 grafica(pred_lin,"Regresion lineal") 
