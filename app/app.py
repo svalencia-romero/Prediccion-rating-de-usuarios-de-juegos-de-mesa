@@ -237,9 +237,11 @@ def main():
     def user_page():
         st.title("Escoja la opción que desee")
         st.write()
-        show_money = st.checkbox("En este apartado podrás comprobar diferentes cuestiones economicas importantes sobre tu juego de mesa.")
         st.write('- Primero selecciona las caracteristicas de tu juego de mesa y despues pincha en la pestaña "Prediccion de rating de usuarios"')
-        show_rating = st.checkbox("Prediccion de rating de usuarios")                  
+        show_rating = st.checkbox("Prediccion de rating de usuarios")
+        st.write('- En este apartado podrás comprobar diferentes cuestiones economicas importantes sobre tu juego de mesa.')   
+        show_money = st.checkbox("Ganancias e inversion en marketing.")
+                       
         if show_rating:
             prediccion = rnd_ft.best_estimator_.predict(df)
             st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))      
