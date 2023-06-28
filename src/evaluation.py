@@ -274,6 +274,7 @@ if pregunta == "S" or pregunta == "s":
     df_conc["Ada Boost Regressor"] = list_ada_gs
     df_conc["Gradient Boosting Regressor"] = list_gbrt
     df_conc["PCA Random Forest Regressor"] = list_pca_rf
+    df_conc["Bagging Regressor"] = list_bag_reg
     df_conc.to_csv("../data/processed/analisis_metricas.csv")
     print("CSV creado con éxito")
 

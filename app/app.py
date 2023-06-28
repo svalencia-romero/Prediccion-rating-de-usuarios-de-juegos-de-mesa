@@ -71,14 +71,14 @@ with open("../models/pca_rf/pca_rf.pkl", "rb") as pca:
 
 df_errores = pd.read_csv("../data/processed/analisis_metricas.csv",index_col="Métricas")
 
-st.set_page_config(layout="wide")
+
 
 #Función graficas errores 
 
 # Crear la gráfica
 def grafica(predicciones,titulo):
     sns.set(style="darkgrid")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(12, 12))
     ax.scatter(y_test, predicciones, color='blue', label='Valores de prueba vs. Valores predichos')
     ax.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'r--')  # Línea de referencia: valores reales = valores predichos
     ax.scatter(y_test, y_test, color='red', label='Valores de prueba')
@@ -86,7 +86,7 @@ def grafica(predicciones,titulo):
     ax.set_ylabel('Valores predichos')
     ax.set_title(titulo)
     ax.legend()
-    st.pyplot(plt)
+    st.pyplot(fig)
 
 def mtx_corr():
     correlation_matrix = df_ml_original.corr()
