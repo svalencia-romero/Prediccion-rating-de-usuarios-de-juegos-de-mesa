@@ -5,6 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import yaml 
+from sklearn.preprocessing import PolynomialFeatures
+
 st.set_option('deprecation.showPyplotGlobalUse', False)
 # Carga de configuraciones de los modelos y test
 
@@ -16,7 +18,11 @@ df_ml_original = pd.read_csv('../data/processed/bgg_proc_ml.csv')
 X_test = df_test.drop('Rating Average', axis=1)
 y_test = df_test['Rating Average']
 
-correlation_matrix = df_ml_original.corr()
+df_train = pd.read_csv('../data/train/train.csv')
+X_train = df_train.drop('Rating Average', axis=1)
+
+with open("../models/modelo_lineal/model_config_lin.yaml", "r") as file:
+    model_lin = yaml.safe_load(file)
 
 with open("../models/arbol_decision/model_config_dtr.yaml", "r") as file:
     model_cfg_dtr = yaml.safe_load(file)
@@ -34,8 +40,11 @@ with open("../models/ada_gs/model_config_ada_gs.yaml", "r") as file:
     model_cfg_ada_gs = yaml.safe_load(file)
 
 
-with open("../models/modelo_lineal/trained_lin_reg.pkl", "rb") as li:
+with open("../models/modelo_lineal/trained_pol_3.pkl", "rb") as li:
     lin_reg = pickle.load(li)
+
+with open("../models/modelo_lineal/transformacion_polinomio.pkl", "rb") as f:
+    transformacion = pickle.load(f)
 
 with open("../models/arbol_decision/dtr_gs.pkl", "rb") as dtr:
     dtr_gs = pickle.load(dtr)
@@ -90,81 +99,82 @@ def grf_corr():
 # Funcion principal del dataframe que vamos modificando con slides
 
 def user_input_parameters():
-            min_players = st.sidebar.slider("Mínimo número de jugadores",1,10)
-            max_players = st.sidebar.slider("Máximo número de jugadores",1,20)
-            play_time = st.sidebar.slider("Tiempo de juego aproximado",5,150)
-            min_age = st.sidebar.slider("Edad mínima",0,25)
-            bgg_rank = st.sidebar.slider("Rango aproximado en BGG que crees que puede tener",1,20344,step=1)
-            complejidad_juego = st.sidebar.slider("Grado de complejidad",0,5)
-            owned_users = st.sidebar.slider("Usuarios que aproximadamente tienen el juego",1,150000,step=1)
-            mech_not_defined = st.sidebar.slider("Mecanicas no definidas",0,1)
-            mech_acting = st.sidebar.slider("Mecanicas de acting",0,1)
-            mech_action = st.sidebar.slider("Mecanicas de acción",0,1)
-            mech_tokens = st.sidebar.slider("Mecanicas de tokens",0,1)
-            mech_construcc_farm = st.sidebar.slider("Mecanicas de construccion y farmeo",0,1)
-            mech_roll_thng = st.sidebar.slider("Mecanicas de tirar dados",0,1)
-            mech_cards = st.sidebar.slider("Mecanicas de cartas",0,1)
-            mech_role_camp = st.sidebar.slider("Mecanicas de rol y campaña",0,1)
-            mech_board = st.sidebar.slider("Mecanicas de tablero",0,1)
-            mech_money = st.sidebar.slider("Mecanicas de dinero",0,1)
-            mech_score = st.sidebar.slider("Mecanicas de puntuacion",0,1)
-            mech_turnbased = st.sidebar.slider("Mecanicas de turnos",0,1)
-            mech_team = st.sidebar.slider("Mecanicas de equipo",0,1)
-            mech_skill = st.sidebar.slider("Mecanicas de habilidad",0,1)
-            mech_solo = st.sidebar.slider("Mecanicas solitario",0,1)
-            abstract = st.sidebar.slider("Juegos abstractos",0,1)
-            children = st.sidebar.slider("Juegos para niños",0,1)
-            customizable = st.sidebar.slider("Juegos con piezas",0,1)
-            family = st.sidebar.slider("Juegos de familia",0,1)
-            party = st.sidebar.slider("Juegos de party",0,1)
-            strategy = st.sidebar.slider("Juegos de estrategia",0,1)
-            thematic = st.sidebar.slider("Juegos de tematicas concretas",0,1)
-            wargames = st.sidebar.slider("Juegos de guerra",0,1)
-            domain_not_defined = st.sidebar.slider("Género no definido",0,1)      
-            
-            
+    min_players = st.sidebar.slider("Mínimo número de jugadores",1,10)
+    max_players = st.sidebar.slider("Máximo número de jugadores",1,20)
+    play_time = st.sidebar.slider("Tiempo de juego aproximado",5,150)
+    min_age = st.sidebar.slider("Edad mínima",0,25)
+    bgg_rank = st.sidebar.slider("Rango aproximado en BGG que crees que puede tener",1,20344,step=1)
+    complejidad_juego = st.sidebar.slider("Grado de complejidad",0,5)
+    owned_users = st.sidebar.slider("Usuarios que aproximadamente tienen el juego",1,150000,step=1)
+    mech_not_defined = st.sidebar.slider("Mecanicas no definidas",0,1)
+    mech_acting = st.sidebar.slider("Mecanicas de acting",0,1)
+    mech_action = st.sidebar.slider("Mecanicas de acción",0,1)
+    mech_tokens = st.sidebar.slider("Mecanicas de tokens",0,1)
+    mech_construcc_farm = st.sidebar.slider("Mecanicas de construccion y farmeo",0,1)
+    mech_roll_thng = st.sidebar.slider("Mecanicas de tirar dados",0,1)
+    mech_cards = st.sidebar.slider("Mecanicas de cartas",0,1)
+    mech_role_camp = st.sidebar.slider("Mecanicas de rol y campaña",0,1)
+    mech_board = st.sidebar.slider("Mecanicas de tablero",0,1)
+    mech_money = st.sidebar.slider("Mecanicas de dinero",0,1)
+    mech_score = st.sidebar.slider("Mecanicas de puntuacion",0,1)
+    mech_turnbased = st.sidebar.slider("Mecanicas de turnos",0,1)
+    mech_team = st.sidebar.slider("Mecanicas de equipo",0,1)
+    mech_skill = st.sidebar.slider("Mecanicas de habilidad",0,1)
+    mech_solo = st.sidebar.slider("Mecanicas solitario",0,1)
+    abstract = st.sidebar.slider("Juegos abstractos",0,1)
+    children = st.sidebar.slider("Juegos para niños",0,1)
+    customizable = st.sidebar.slider("Juegos con piezas",0,1)
+    family = st.sidebar.slider("Juegos de familia",0,1)
+    party = st.sidebar.slider("Juegos de party",0,1)
+    strategy = st.sidebar.slider("Juegos de estrategia",0,1)
+    thematic = st.sidebar.slider("Juegos de tematicas concretas",0,1)
+    wargames = st.sidebar.slider("Juegos de guerra",0,1)
+    domain_not_defined = st.sidebar.slider("Género no definido",0,1)      
+    
+    
 
-            data ={"Min Players":min_players,
-                "Max Players":max_players,
-                "Play Time":play_time,
-                "Min Age":min_age,
-                "BGG Rank":bgg_rank,
-                "Complexity Average":complejidad_juego,
-                "Owned Users":owned_users,
-                "Mech Not Defined":mech_not_defined,
-                "Mech_Acting":mech_acting,
-                "Mech_Action":mech_action,
-                "Mech_tokens":mech_tokens,
-                "Mech_construcc_farm":mech_construcc_farm,
-                "Mech_roll_thng":mech_roll_thng,
-                "Mech_cards":mech_cards,
-                "Mech_role_camp":mech_role_camp,
-                "Mech_board":mech_board,
-                "Mech_money":mech_money,
-                "Mech_score":mech_score,
-                "Mech_turnbased":mech_turnbased,
-                "Mech_team":mech_team,
-                "Mech_skill":mech_skill,
-                "Mech_solo":mech_solo,
-                "Abstract":abstract,
-                "Children":children,
-                "Customizable":customizable,
-                "Family":family,
-                "Party":party,
-                "Strategy":strategy,
-                "Thematic":thematic,
-                "Wargames":wargames,            
-                "Domain_Not Defined":domain_not_defined,
-                }
-            features = pd.DataFrame(data,index=[0])
-            return features
+    data ={"Min Players":min_players,
+        "Max Players":max_players,
+        "Play Time":play_time,
+        "Min Age":min_age,
+        "BGG Rank":bgg_rank,
+        "Complexity Average":complejidad_juego,
+        "Owned Users":owned_users,
+        "Mech Not Defined":mech_not_defined,
+        "Mech_Acting":mech_acting,
+        "Mech_Action":mech_action,
+        "Mech_tokens":mech_tokens,
+        "Mech_construcc_farm":mech_construcc_farm,
+        "Mech_roll_thng":mech_roll_thng,
+        "Mech_cards":mech_cards,
+        "Mech_role_camp":mech_role_camp,
+        "Mech_board":mech_board,
+        "Mech_money":mech_money,
+        "Mech_score":mech_score,
+        "Mech_turnbased":mech_turnbased,
+        "Mech_team":mech_team,
+        "Mech_skill":mech_skill,
+        "Mech_solo":mech_solo,
+        "Abstract":abstract,
+        "Children":children,
+        "Customizable":customizable,
+        "Family":family,
+        "Party":party,
+        "Strategy":strategy,
+        "Thematic":thematic,
+        "Wargames":wargames,            
+        "Domain_Not Defined":domain_not_defined,
+        }
+    features = pd.DataFrame(data,index=[0])
+    return features
 
+df = user_input_parameters()
 
+correlation_matrix = df_ml_original.corr()
 # Funcion principal de la App
 
 
-def main():
-       
+def main():    
     # Titulo
     st.title("Modelo Predictivo de Juegos de Mesa")
     st.image("../img/board.jpg", width=650)
@@ -174,9 +184,7 @@ def main():
         st.title("Página para cliente final")
         st.write()
         show_money = st.checkbox("En este apartado podrás comprobar diferentes cuestiones economicas importantes sobre tu juego.")
-        show_rating = st.checkbox("Prediccion de rating de usuarios")
-        df = user_input_parameters()                       
-        
+        show_rating = st.checkbox("Prediccion de rating de usuarios")                  
         if show_rating:
             prediccion = rnd_ft.best_estimator_.predict(df)
             st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))      
@@ -220,7 +228,10 @@ def main():
         
         if show_grafs:
             pred_rnd_ft = rnd_ft.predict(X_test)
-            pred_lin = lin_reg.predict(X_test)
+            poly_feats = PolynomialFeatures(degree = model_lin['degree'])
+            poly_feats.fit(X_train)
+            X_test_poly = poly_feats.transform(X_test)
+            pred_lin = lin_reg.predict(X_test_poly)
             pred_ada = ada_gs.predict(X_test)
             pred_gbr = gbrt.predict(X_test)
             pred_pca = pca_rf.predict(X_test)
@@ -233,7 +244,7 @@ def main():
                 "PCA con Random Forest Regressor",
                 "Random Forest Regressor"
                 ]
-            graf = st.selectbox("Seleccionar configuración", graf_options)        
+            graf = st.selectbox("Seleccionar grafico", graf_options)        
             if graf == "Regresion lineal":
                 grafica(pred_lin,"Regresion lineal") 
             if graf == "Decision Tree Regressor":   
@@ -247,14 +258,12 @@ def main():
             if graf == "Random Forest Regressor":
                 grafica(pred_rnd_ft,"Random Forest Regressor")  
         
-        df = user_input_parameters()
-        
         if show_config:
             cfg_options = ["Decision Tree Regressor",
                 "Ada Boost Regressor",
                 "Gradient Boosting Regressor",
                 "PCA con Random Forest Regressor",
-                "Random Forest Regressor"
+                "Random Forest Regressor","Regresion lineal"
                 ]
             cfg = st.selectbox("Seleccionar configuración", cfg_options)        
             if cfg == "Decision Tree Regressor":   
@@ -267,13 +276,16 @@ def main():
                 st.write(model_cfg_pca_rf)
             if cfg == "Random Forest Regressor":
                 st.write(model_cfg_rnd_ft)
+            if cfg == "Regresion lineal":
+                st.write(model_lin)
    
         if show_dataframe:
                 st.dataframe(df_errores)  
 
         if show_rating:
             if model == "Linear Regression":
-                    prediccion = lin_reg.predict(df)
+                    df_transformado = transformacion.transform(df)
+                    prediccion = lin_reg.predict(df_transformado)
                     st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
             if model == "Decision Tree Regressor":
                     prediccion = dtr_gs.best_estimator_.predict(df)
@@ -290,12 +302,13 @@ def main():
             if model == "PCA con Random Forest Regressor":
                     prediccion = pca_rf.best_estimator_.predict(df)
                     st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
-
-    page = st.sidebar.selectbox("Selecciona una página", ("Usuarios", "Científicos de Datos"))    
-    if page == "Usuarios":
+    
+    page = st.sidebar.selectbox("Selecciona una página", ("Cliente", "Científicos de Datos"))   
+        
+    if page == "Cliente":
         user_page()
     else:
-        data_scientist_page()     
+        data_scientist_page() 
 
 if __name__ == "__main__":
     main()
