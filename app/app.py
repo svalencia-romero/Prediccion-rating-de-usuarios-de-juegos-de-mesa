@@ -157,9 +157,9 @@ def user_input_parameters():
     max_players = st.sidebar.slider("Máximo número de jugadores",1,20)
     play_time = st.sidebar.slider("Tiempo de juego aproximado",5,150)
     min_age = st.sidebar.slider("Edad mínima",0,25)
-    bgg_rank = st.sidebar.slider("Rango aproximado en BGG que crees que puede tener",1,20344,step=1)
+    bgg_rank = st.sidebar.slider("Rango aproximado en BGG que crees que puede tener tu juego",1,20344,10000)
     complejidad_juego = st.sidebar.slider("Grado de complejidad",0,5)
-    owned_users = st.sidebar.slider("Usuarios que aproximadamente tienen el juego",1,150000,step=1)
+    owned_users = st.sidebar.slider("Usuarios que estimas que tendrá el juego",1,150000,10000)
     mech_not_defined = st.sidebar.slider("Mecanicas no definidas",0,1)
     mech_acting = st.sidebar.slider("Mecanicas de acting",0,1)
     mech_action = st.sidebar.slider("Mecanicas de acción",0,1)
@@ -258,10 +258,12 @@ def main():
             gan_game_overall = (df["Owned Users"].values[0] * gan_per_game)  - coste_manuf_game
             inv_rank = 20345 - df["BGG Rank"].values[0]
             total_cost = inv_rank * cost_per_rank + df["Owned Users"].values[0] * cost_per_user_tienda
-            st.write("Dinero obtenido por cada juego:", round(gan_per_game, 2),"€")
+            st.write("Dinero obtenido por cada juego:", round(gan_per_game, 2),"€ *")
+            st.write("Total del dinero ganado con el juego :", round(gan_game_overall, 2),"€ **")
+            st.write("El coste aproximado total de publicidad es de :", round(total_cost, 2),"€ ***")
             st.write('*Estimación realizada si las tiendas reciben el 20 % de las ventas de cada juego')
-            st.write("Total del dinero ganado con el juego:", round(gan_game_overall, 2),"€")
-            st.write("El coste aproximado total de publicidad es de :", round(total_cost, 2),"€")
+            st.write('** Nº de personas que estimas que tendrá el juego * (Ganancia de cada juego - 20% tienda)')
+            st.write('*** Estimación calculada en base a que cada rango del BGG del 20344 hasta el 10000 cuesta 1€ después del 10000 hasta el 1, 10€ por rango')
 
     def data_scientist_page():
         st.title("Página para Científicos de Datos")
