@@ -21,6 +21,11 @@ y_test = df_test['Rating Average']
 df_train = pd.read_csv('../data/train/train.csv')
 X_train = df_train.drop('Rating Average', axis=1)
 
+# Carga de configuraciones
+
+with open("../models/bagging_regressor/model_config_bag_gs.yaml", "r") as file:
+    model_bag = yaml.safe_load(file)
+
 with open("../models/modelo_lineal/model_config_lin.yaml", "r") as file:
     model_lin = yaml.safe_load(file)
 
@@ -39,6 +44,9 @@ with open("../models/random_forest/model_config_rnd_ft.yaml", "r") as file:
 with open("../models/ada_gs/model_config_ada_gs.yaml", "r") as file:
     model_cfg_ada_gs = yaml.safe_load(file)
 
+# Carga de modelos
+with open("../models/bagging_regressor/bar_reg.pkl", "rb") as li:
+    bag_reg = pickle.load(li)
 
 with open("../models/modelo_lineal/trained_pol_3.pkl", "rb") as li:
     lin_reg = pickle.load(li)
@@ -211,7 +219,7 @@ def main():
     def data_scientist_page():
         st.title("Página para Científicos de Datos")
         
-        option =["Linear Regression","Decision Tree Regressor" ,"Random Forest Regressor","Ada Boost Regressor","Gradient Boosting Regressor","PCA con Random Forest Regressor"]
+        option =["Bagging Regressor","Linear Regression","Decision Tree Regressor" ,"Random Forest Regressor","Ada Boost Regressor","Gradient Boosting Regressor","PCA con Random Forest Regressor"]
         model = st.sidebar.selectbox("¿Que modelo quieres probar?",option)
 
         show_dataframe = st.checkbox("Mostrar/ocultar Data Frame con errores de cada modelo")
@@ -232,19 +240,23 @@ def main():
             poly_feats.fit(X_train)
             X_test_poly = poly_feats.transform(X_test)
             pred_lin = lin_reg.predict(X_test_poly)
+            pred_bag = bag_reg.predict(X_test)
             pred_ada = ada_gs.predict(X_test)
             pred_gbr = gbrt.predict(X_test)
             pred_pca = pca_rf.predict(X_test)
             pred_dtr = dtr_gs.predict(X_test)
 
-            graf_options = ["Regresion lineal",
+            graf_options = ["Bagging Regressor",
+                "Regresion lineal",
                 "Decision Tree Regressor",
                 "Ada Boost Regressor",
                 "Gradient Boosting Regressor",
                 "PCA con Random Forest Regressor",
                 "Random Forest Regressor"
                 ]
-            graf = st.selectbox("Seleccionar grafico", graf_options)        
+            graf = st.selectbox("Seleccionar grafico", graf_options)
+            if graf == pred_bag:
+                grafica(pred_bag,"Bagging Regressor")         
             if graf == "Regresion lineal":
                 grafica(pred_lin,"Regresion lineal") 
             if graf == "Decision Tree Regressor":   
@@ -259,13 +271,16 @@ def main():
                 grafica(pred_rnd_ft,"Random Forest Regressor")  
         
         if show_config:
-            cfg_options = ["Decision Tree Regressor",
+            cfg_options = ["Bagging Regressor",
+                "Decision Tree Regressor",
                 "Ada Boost Regressor",
                 "Gradient Boosting Regressor",
                 "PCA con Random Forest Regressor",
                 "Random Forest Regressor","Regresion lineal"
                 ]
             cfg = st.selectbox("Seleccionar configuración", cfg_options)        
+            if cfg == "Bagging Regressor":   
+                st.write(model_bag)
             if cfg == "Decision Tree Regressor":   
                 st.write(model_cfg_dtr)
             if cfg == "Ada Boost Regressor":
@@ -283,22 +298,25 @@ def main():
                 st.dataframe(df_errores)  
 
         if show_rating:
+            if model == "Bagging Regressor":
+                prediccion = bag_reg.predict(df)
+                st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2))) 
             if model == "Linear Regression":
-                    df_transformado = transformacion.transform(df)
-                    prediccion = lin_reg.predict(df_transformado)
-                    st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
+                df_transformado = transformacion.transform(df)
+                prediccion = lin_reg.predict(df_transformado)
+                st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
             if model == "Decision Tree Regressor":
-                    prediccion = dtr_gs.best_estimator_.predict(df)
-                    st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
+                prediccion = dtr_gs.best_estimator_.predict(df)
+                st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
             if model == "Random Forest Regressor" or model == "Mejor modelo predictivo":
-                    prediccion = rnd_ft.best_estimator_.predict(df)
-                    st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
+                prediccion = rnd_ft.best_estimator_.predict(df)
+                st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
             if model == "Ada Boost Regressor":
-                    prediccion = ada_gs.best_estimator_.predict(df)
-                    st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
+                prediccion = ada_gs.best_estimator_.predict(df)
+                st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
             if model == "Gradient Boosting Regressor":
-                    prediccion = gbrt.best_estimator_.predict(df)
-                    st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
+                prediccion = gbrt.best_estimator_.predict(df)
+                st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
             if model == "PCA con Random Forest Regressor":
                     prediccion = pca_rf.best_estimator_.predict(df)
                     st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))

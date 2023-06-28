@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor,AdaBoostRegressor,GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor,AdaBoostRegressor,GradientBoostingRegressor,BaggingRegressor
 import pickle
 import time
 import functions
@@ -144,6 +144,42 @@ def gbrt():
     # Subida del modelo.
     pickle.dump(gbrt, open('../models/gbrt/gbrt.pkl', 'wb'))
 
+def bag_reg():
+    #------------------------------------------------------------------------------------------------------------------
+    #---------------------------------------------  Modelo Bagging Regressor---------------------------------
+    #------------------------------------------------------------------------------------------------------------------
+    
+    # Cargar el archivo YAML
+    # model_config_path_tree = "../models/bagging_regressor/model_config_bag_gs.yaml"
+
+    # model_config_bag_reg = functions.load_config(model_config_path_tree)  
+
+    # Crear el BaggingRegressor con la configuración correspondiente
+    
+    bag_rgs = BaggingRegressor(random_state=5)
+
+    # Obtener los parámetros para la búsqueda en cuadrícula
+    estimator = DecisionTreeRegressor(max_depth=15, random_state=5)
+    parameters = {'base_estimator':[estimator],
+                'n_estimators':[300,350,400],
+                'max_samples': [50,100,150],
+                'bootstrap':[True,False],
+                'max_features': [20,25,30]}
+
+    # Crear el objeto GridSearchCV con la configuración correspondiente
+    
+
+    bag_rgs = BaggingRegressor(random_state=5)
+    
+    bag_rgs_gs = GridSearchCV(bag_rgs, parameters, scoring='neg_mean_squared_error', cv=5)
+
+    # Entrenar el modelo GridSearchCV
+    bag_rgs_gs.fit(X_train, y_train)
+
+
+    # Subida del modelo.
+    pickle.dump(bag_rgs_gs.best_estimator_, open('../models/bagging_regressor/bar_reg.pkl', 'wb'))
+
 def pca_rf():
     #------------------------------------------------------------------------------------------------------------------
     #---------------------------------------------  Modelo PCA con Random Forest --------------------------------------
@@ -215,7 +251,7 @@ df_test.to_csv('../data/test/test.csv', index=False)
 selector = input("¿Quieres un entrenar un modelo en particular(M) o quieres entrenar todos(Cualquier tecla)?:(M/Cualquier tecla)")
 
 if selector == "M":
-    selector_2 = input("¿Que módelo quieres entrenar? \n Lineal(L) (10seg) \n Arbol de decision(D) (10 min aprox) \n Random Forest(R) (3 min aprox) \n Ada Boost(A) (3 min aprox) \n Gradient Boosting Regressor(G) (10 min aprox) \n PCA con Random Forest Regressor(P) \n (L\D\R\A\G\P): ")
+    selector_2 = input("¿Que módelo quieres entrenar? \n Lineal(L) (10seg) \n Arbol de decision(D) (10 min aprox) \n Random Forest(R) (3 min aprox) \n Ada Boost(A) (3 min aprox) \n Gradient Boosting Regressor(G) (10 min aprox) \n Bagging Regressor (5 minutos) \n PCA con Random Forest Regressor(P) \n (L\D\R\A\G\B\P): ")
     if selector_2 == "L":
         print("Entrenando modelo lineal...")
         lin_reg_pol()
@@ -248,6 +284,13 @@ if selector == "M":
         print("10 minutos aproximadamente de entrenamiento...paciencia...")
         gbrt()
         print("Entrenamiento modelo Gradient Boosting Regressor completado")
+        time.sleep(5)
+
+    if selector_2 == "B":
+        print("Entrenando modelo Bagging Regressor...")
+        print("5 minutos aproximadamente de entrenamiento...paciencia...")
+        bag_reg()
+        print("Entrenamiento modelo Bagging Regressor completado")
         time.sleep(5)
 
     if selector_2 == "P":
@@ -284,6 +327,11 @@ else:
     print("10 minutos aproximadamente de entrenamiento...paciencia...")
     gbrt()
     print("Entrenamiento modelo Gradient Boosting Regressor completado")
+    # Entrenamiento modelo Bagging Regressor
+    print("Entrenando modelo Bagging Regressor...")
+    print("5 minutos aproximadamente de entrenamiento...paciencia...")
+    bag_reg()
+    print("Entrenamiento modelo Bagging Regressor completado")
     # Entrenamiento modelo PCA con Random Forest Regressor
     print("Entrenando modelo PCA con Random Forest Regressor ...")
     print("15 minutos aproximadamente de entrenamiento...paciencia...")

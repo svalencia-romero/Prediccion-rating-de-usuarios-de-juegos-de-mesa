@@ -1,0 +1,9 @@
+parameters:
+  base_estimator: [sklearn.tree.DecisionTreeRegressor(max_depth=15,random_state=5)]
+  n_estimators: [300, 350, 400]
+  max_samples: [50, 100, 150]
+  bootstrap: [True, False]
+  max_features: [20, 25, 30]
+GridSearchCV:
+  scoring: neg_mean_squared_error
+  cv: 5

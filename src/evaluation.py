@@ -125,6 +125,41 @@ print("R-squared (R2) Score:", round(r2_rdm_fs,4),"\n")
 
 list_rdm_fs = [round(mae_rdm_fs,4),round(mape_rdm_fs,4),round(mse_rdm_fs,4),round(rmse_rdm_fs,4),round(r2_rdm_fs,4)]
 
+# Modelo Bagging Regressor
+
+# Carga de modelo
+model_path = '../models/bagging_regressor/bar_reg.pkl'
+
+loaded_model_bag = functions.load_model(model_path)
+
+# Cargamos data test
+
+df_test = pd.read_csv('../data/test/test.csv')
+
+# Obtener las características (X_test) y las etiquetas (y_test)
+
+X_test = df_test.drop('Rating Average', axis=1)
+y_test = df_test['Rating Average']
+
+# Obtener el mejor modelo entrenado
+
+y_pred_bag = loaded_model_bag.predict(X_test)
+
+mae_reg = mean_absolute_error(y_test, y_pred_bag)
+mape_reg = mean_absolute_percentage_error(y_test, y_pred_bag)
+mse_reg = mean_squared_error(y_test, y_pred_bag)
+rmse_reg = mean_squared_error(y_test, y_pred_bag, squared=False)
+r2_reg = r2_score(y_test, y_pred_bag)
+
+print("Métricas del modelo Bagging Regressor","\n")
+print("Mean Absolute Error (MAE):", round(mae_reg,4))
+print("Mean Absolute Percentage Error (MAPE):", round(mape_reg,4))
+print("Mean Squared Error (MSE):", round(mse_reg,4))
+print("Root Mean Squared Error (RMSE):", round(rmse_reg,4))
+print("R-squared (R2) Score:", round(r2_reg,4),"\n")
+
+list_bag_reg = [round(mae_reg,4),round(mape_reg,4),round(mse_reg,4),round(rmse_reg,4),round(r2_reg,4)]
+
 # Modelo Ada Boost
 
 # Carga de modelo
