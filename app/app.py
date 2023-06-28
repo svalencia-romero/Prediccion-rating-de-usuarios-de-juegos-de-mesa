@@ -255,17 +255,20 @@ def main():
             
             coste_de_juego = st.number_input("¿Cuanto va a costar tu juego en la tienda?",value=25,step=1) # Coste
             cost_per_user_tienda = coste_de_juego * 0.20 # Lo que se lleva la tienda por juego vendido.
-            coste_manuf_game = st.number_input("¿Cuanto dinero tienes previsto invertir en fabricar tu juego?",value=2000,step=1)
+            coste_manuf_game = st.number_input("¿Cuanto dinero tienes previsto invertir en fabricar tu juego?",value=5000,step=1)
             gan_per_game = (coste_de_juego * 0.80) - cost_per_rank # Lo que se lleva el cliente por juego.
             gan_game_overall = (df["Owned Users"].values[0] * gan_per_game)  - coste_manuf_game
             inv_rank = 20345 - df["BGG Rank"].values[0]
             total_cost = inv_rank * cost_per_rank + df["Owned Users"].values[0] * cost_per_user_tienda
+            inversion_total = total_cost + coste_manuf_game
             st.write("Dinero obtenido por cada juego:", round(gan_per_game, 2),"€ *")
             st.write("Total del dinero ganado con el juego :", round(gan_game_overall, 2),"€ **")
             st.write("El coste aproximado total de publicidad es de :", round(total_cost, 2),"€ ***")
+            st.write("El coste aproximado total de toda la inversion en el juego es de :", round(inversion_total, 2),"€ ****")
             st.write('*Estimación realizada si las tiendas reciben el 20 % de las ventas de cada juego y BGG ')
             st.write('** Nº de personas que estimas que tendrá el juego * (Ganancia de cada juego - 20% tienda) - Dinero invertido en el juego')
             st.write('*** Estimación calculada en base a que cada rango del BGG del 20344 hasta el 10000 cuesta 1€ después del 10000 hasta el 1, 10€ por rango')
+            st.write('**** Coste total de publicidad + inversion en fabricar el juego')
 
     def data_scientist_page():
         st.title("Página para Científicos de Datos")
