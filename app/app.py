@@ -283,7 +283,12 @@ def main():
         show_corr_mat = st.checkbox("Mostrar/ocultar matriz de correlación")
         show_corr_map = st.checkbox("Mostrar/ocultar mapa de correlación")
         show_graf_bi = st.checkbox("Mostrar/ocultar comparación variables")
-
+        
+        if show_corr_map:
+                grf_corr()
+        if show_corr_mat:
+                mtx_corr()
+        
         if show_graf_bi:
             select_graf_bi_options = ("BGG rank vs Rating Usuarios","Complejidad de juego vs Rating Usuarios","Densidad Rating Average","Mecanicas que más correlan con el rating","Mecanicas con mejor nota","Géneros que más correlan con el rating","Géneros con mejor nota")
             select_graf_bi = st.selectbox("Selecciona gráfico",select_graf_bi_options)
@@ -301,10 +306,7 @@ def main():
                 var_corr(df_ml_original,['Mech_role_camp', 'Mech_team', 'Mech_solo'],"Variables de Géneros","Géneros")
             if select_graf_bi == "Géneros con mejor nota":
                 plot_barplots(df_ml_original,"Rating Average",['Strategy','Wargames'])
-            if show_corr_map:
-                grf_corr()
-            if show_corr_mat:
-                mtx_corr()
+
         
         if show_grafs:
             pred_rnd_ft = rnd_ft.predict(X_test)
