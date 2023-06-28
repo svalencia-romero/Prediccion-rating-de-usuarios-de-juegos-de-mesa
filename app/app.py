@@ -230,17 +230,17 @@ correlation_matrix = df_ml_original.corr()
 
 def main():    
     # Titulo
-    st.title("Predicción deñ Rating de Juegos de Mesa")
+    st.title("Predicción Rating Usuarios Juegos de Mesa")
     st.image(os.path.join(dir_path,"..","img","board.jpg"), width=650)
     st.write("¡Bienvenido!")
     # Página para científicos de datos
     def user_page():
         st.title("Escoja la opción que desee")
         st.write()
-        st.write('- Primero selecciona las caracteristicas de tu juego de mesa y despues pincha en la pestaña "Prediccion de rating de usuarios"')
-        show_rating = st.checkbox("Prediccion de rating de usuarios")
-        st.write('- En este apartado podrás comprobar diferentes cuestiones economicas importantes sobre tu juego de mesa.')   
-        show_money = st.checkbox("Ganancias e inversion en marketing.")
+        st.write('- Primero selecciona las caracteristicas de tu juego de mesa y despues pincha en la pestaña "Predicción de rating de usuarios"')
+        show_rating = st.checkbox("Predicción de rating de usuarios")
+        st.write('- En este apartado podrás comprobar diferentes cuestiones económicas importantes sobre tu juego de mesa.')   
+        show_money = st.checkbox("Ganancias e inversión en marketing.")
                        
         if show_rating:
             prediccion = rnd_ft.best_estimator_.predict(df)
