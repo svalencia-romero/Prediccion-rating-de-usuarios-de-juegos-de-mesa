@@ -39,13 +39,6 @@ def lin_reg_pol():
 
     X_train_poly = poly_feats.transform(X_train)
 
-    #Transformador Data Frame de Train y test
-
-    df_train = pd.DataFrame(X_train)
-    df_train['Rating Average'] = y_train
-
-    df_test = pd.DataFrame(X_test)
-    df_test['Rating Average'] = y_test
 
     # Modelo lineal
 
@@ -269,14 +262,14 @@ if selector == "M":
         print("Entrenando modelo random forest...")
         print("3 minutos aproximadamente de entrenamiento...paciencia...")
         rnd_ft()
-        print("Entrenamiento modelo arbol de decisión completado")
+        print("Entrenamiento modelo random forest completado")
         time.sleep(5)
     
     if selector_2 == "A":
         print("Entrenando modelo Ada Boost...")
         print("3 minutos aproximadamente de entrenamiento...paciencia...")
         ada_gs()
-        print("Entrenamiento modelo arbol de decisión completado")
+        print("Entrenamiento modelo Ada Boost completado")
         time.sleep(5)
     
     if selector_2 == "G":
@@ -316,12 +309,12 @@ else:
     print("Entrenando modelo Random forest...")
     print("3 minutos aproximadamente de entrenamiento...paciencia...")
     rnd_ft()
-    print("Entrenamiento modelo arbol de decisión completado")
+    print("Entrenamiento modelo Random forest completado")
     # Entrenamiento modelo Ada Boost
     print("Entrenando modelo Ada Boost...")
     print("3 minutos aproximadamente de entrenamiento...paciencia...")
     ada_gs()
-    print("Entrenamiento modelo arbol de decisión completado")
+    print("Entrenamiento modelo Ada Boost completado")
     # Entrenamiento modelo Gradient Boosting Regressor
     print("Entrenando modelo Gradient Boosting Regressor...")
     print("10 minutos aproximadamente de entrenamiento...paciencia...")
