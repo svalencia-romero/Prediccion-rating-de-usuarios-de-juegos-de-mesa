@@ -238,7 +238,7 @@ def main():
         st.title("Escoja la opción que desee")
         st.write()
         show_money = st.checkbox("En este apartado podrás comprobar diferentes cuestiones economicas importantes sobre tu juego de mesa.")
-        st.write('Primero selecciona las caracteristicas de tu juego de mesa y despues pincha en la pestaña')
+        st.write('- Primero selecciona las caracteristicas de tu juego de mesa y despues pincha en la pestaña "Prediccion de rating de usuarios"')
         show_rating = st.checkbox("Prediccion de rating de usuarios")                  
         if show_rating:
             prediccion = rnd_ft.best_estimator_.predict(df)
