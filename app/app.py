@@ -80,6 +80,50 @@ df_errores = pd.read_csv(os.path.join(dir_path, "..", "data", "processed", "anal
 #Función graficas errores 
 
 # Crear la gráfica
+def plot_barplots(df, x, variables):
+    num_plots = len(variables)
+    fig, axes = plt.subplots(1, num_plots, figsize=(20, 4))
+    
+    for i, var in enumerate(variables):
+        sns.barplot(data=df, x=x, y=var, label=var, orient='h', ax=axes[i])
+        axes[i].set_xlabel(x)
+        axes[i].set_ylabel(var)
+        axes[i].set_xlim(6, 8)
+    
+    plt.tight_layout()
+    st.pyplot(fig)
+
+def var_corr(df,variables,titulo,ejex):
+    sns.set(style="darkgrid")
+    fig = None
+    for var in variables:
+        if fig is None:
+            fig = sns.kdeplot(df[var], fill=True, label=var)
+        else:
+            sns.kdeplot(df[var], fill=True, label=var)
+
+    plt.xlabel(ejex)
+    plt.ylabel('Concentración de Variables')
+    plt.legend()
+
+    st.pyplot(fig.figure)
+
+def graf_univ(var,titulo):
+    fig = plt.figure(figsize=(5, 5))
+    sns.set(style="darkgrid")
+    sns.histplot(data=df_ml_original, x=var, color="skyblue", kde=True, bins=30)
+    plt.title(titulo)
+
+    st.pyplot(fig) 
+
+def graf_bivar(var1,var2,titulo):
+    fig = plt.figure(figsize=(8, 5))
+    sns.set(style="darkgrid")
+    sns.regplot(x=var1, y=var2)
+    plt.title(titulo)
+    st.pyplot(fig)
+
+
 def grafica(predicciones,titulo):
     sns.set(style="darkgrid")
     fig, ax = plt.subplots(figsize=(12, 12))
@@ -95,13 +139,11 @@ def grafica(predicciones,titulo):
 def mtx_corr():
     correlation_matrix = df_ml_original.corr()
 
-    # Mostrar la matriz de correlación en Streamlit
     st.write("Matriz de correlación:")
     st.write(correlation_matrix)
 
 def grf_corr():
 
-    # Crear una visualización de la matriz de correlación utilizando un mapa de calor
     plt.figure(figsize=(30, 15))
     sns.heatmap(correlation_matrix, annot=True, cmap="viridis")
     plt.title("Matriz de correlación")
@@ -232,11 +274,29 @@ def main():
         show_config = st.checkbox("Mostrar/ocultar configuraciones de modelos")
         show_corr_mat = st.checkbox("Mostrar/ocultar matriz de correlación")
         show_corr_map = st.checkbox("Mostrar/ocultar mapa de correlación")
-        
-        if show_corr_map:
-            grf_corr()
-        if show_corr_mat:
-            mtx_corr()
+        show_graf_bi = st.checkbox("Mostrar/ocultar comparación variables")
+
+        if show_graf_bi:
+            select_graf_bi_options = ("BGG rank vs Rating Usuarios","Complejidad de juego vs Rating Usuarios","Densidad Rating Average","Mecanicas que más correlan con el rating","Mecanicas con mejor nota","Géneros que más correlan con el rating","Géneros con mejor nota")
+            select_graf_bi = st.selectbox("Selecciona gráfico",select_graf_bi_options)
+            if select_graf_bi == "BGG rank vs Rating Usuarios":
+                graf_bivar(df_ml_original["BGG Rank"],df_ml_original["Rating Average"], "BBG Rank vs Rating usuarios")
+            if select_graf_bi == "Complejidad de juego vs Rating Usuarios":
+                graf_bivar(df_ml_original["Complexity Average"],df_ml_original["Rating Average"], "Complejidad vs Rating Usuarios")
+            if select_graf_bi == "Densidad Rating Average":
+                graf_univ(df_ml_original["Rating Average"], "Densidad Rating Usuarios")
+            if select_graf_bi == "Mecanicas que más correlan con el rating":
+                var_corr(df_ml_original,['Mech_role_camp', 'Mech_team', 'Mech_solo'],"Variables de Mecanicas","Mecanicas")
+            if select_graf_bi == "Mecanicas con mejor nota":
+                plot_barplots(df_ml_original,"Rating Average",['Mech_role_camp', 'Mech_team', 'Mech_solo'])  
+            if select_graf_bi == "Géneros que más correlan con el rating":
+                var_corr(df_ml_original,['Mech_role_camp', 'Mech_team', 'Mech_solo'],"Variables de Géneros","Géneros")
+            if select_graf_bi == "Géneros con mejor nota":
+                plot_barplots(df_ml_original,"Rating Average",['Strategy','Wargames'])
+            if show_corr_map:
+                grf_corr()
+            if show_corr_mat:
+                mtx_corr()
         
         if show_grafs:
             pred_rnd_ft = rnd_ft.predict(X_test)
