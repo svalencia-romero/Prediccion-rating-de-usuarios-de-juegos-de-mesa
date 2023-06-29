@@ -12,10 +12,13 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-# Carga de configuraciones de los modelos y test
+# Carga de test y otros archivos
 
+with open(os.path.join(dir_path,"..","docs","Mechanics_selec.txt"), "r") as file:
+        txt_mecanicas = file.read()
 df_test = pd.read_csv(os.path.join(dir_path, "..", "data", "test", "test.csv"))
 df_ml_original = pd.read_csv(os.path.join(dir_path, "..", "data", "processed", "bgg_proc_ml.csv"))
+df_raw = pd.read_csv(os.path.join(dir_path, "..", "data", "raw", "bgg_dataset.csv"),sep=";")
 
 # Obtener las características (X_test) y las etiquetas (y_test)
 
@@ -265,9 +268,9 @@ def main():
             st.write("Total del dinero ganado con el juego :", round(gan_game_overall, 2),"€ **")
             st.write("El coste aproximado total de publicidad es de :", round(total_cost, 2),"€ ***")
             st.write("El coste aproximado total de toda la inversion en el juego es de :", round(inversion_total, 2),"€ ****")
-            st.write('*Estimación realizada si las tiendas reciben el 20 % de las ventas de cada juego y BGG ')
+            st.write('*Estimación realizada si las tiendas reciben el 20 % de las ventas de cada juego y también sumando el precio del rango en BGG(1€p/r 10000-20344,10€p/r 1-10000)')
             st.write('** Nº de personas que estimas que tendrá el juego * (Ganancia de cada juego - 20% tienda) - Dinero invertido en el juego')
-            st.write('*** Estimación calculada en base a que cada rango del BGG del 20344 hasta el 10000 cuesta 1€ después del 10000 hasta el 1, 10€ por rango')
+            st.write('*** Cada rango de BGG del 10000-20344 cuesta 1€, del 1-10000, 10€ por rango. A esto hay que sumar el 20% que se lleva cada tienda.')
             st.write('**** Coste total de publicidad + inversion en fabricar el juego')
 
     def data_scientist_page():
@@ -276,7 +279,8 @@ def main():
         option =["Bagging Regressor","Linear Regression","Decision Tree Regressor" ,"Random Forest Regressor","Ada Boost Regressor","Gradient Boosting Regressor","PCA con Random Forest Regressor"]
         model = st.sidebar.selectbox("¿Que modelo quieres probar?",option)
 
-        show_dataframe = st.checkbox("Mostrar/ocultar Data Frame con errores de cada modelo")
+        show_dataframes = st.checkbox("Mostrar/ocultar Data Frame original vs Data Frame análisis")
+        show_dataframe_errors = st.checkbox("Mostrar/ocultar Data Frame con errores de cada modelo")
         show_rating = st.checkbox("Mostrar/ocultar rating de usuarios")
         show_grafs = st.checkbox("Graficas valores de prueba vs valores predichos")
         show_config = st.checkbox("Mostrar/ocultar configuraciones de modelos")
@@ -303,7 +307,7 @@ def main():
             if select_graf_bi == "Mecanicas con mejor nota":
                 plot_barplots(df_ml_original,"Rating Average",['Mech_role_camp', 'Mech_team', 'Mech_solo'])  
             if select_graf_bi == "Géneros que más correlan con el rating":
-                var_corr(df_ml_original,['Mech_role_camp', 'Mech_team', 'Mech_solo'],"Variables de Géneros","Géneros")
+                var_corr(df_ml_original,['Strategy','Wargames'],"Variables de Géneros","Géneros")
             if select_graf_bi == "Géneros con mejor nota":
                 plot_barplots(df_ml_original,"Rating Average",['Strategy','Wargames'])
 
@@ -320,14 +324,13 @@ def main():
             pred_pca = pca_rf.predict(X_test)
             pred_dtr = dtr_gs.predict(X_test)
 
-            graf_options = ["Bagging Regressor",
-                "Regresion lineal",
-                "Decision Tree Regressor",
-                "Ada Boost Regressor",
-                "Gradient Boosting Regressor",
-                "PCA con Random Forest Regressor",
-                "Random Forest Regressor"
-                ]
+            graf_options = ["Regresion lineal",
+                            "Decision Tree Regressor",
+                            "Random Forest Regressor",
+                            "Ada Boost Regressor",
+                            "Gradient Boosting Regressor",
+                            "PCA con Random Forest Regressor",
+                            "Bagging Regressor"]
             graf = st.selectbox("Seleccionar grafico", graf_options)
             if graf == "Bagging Regressor":
                 grafica(pred_bag,"Bagging Regressor")         
@@ -345,13 +348,13 @@ def main():
                 grafica(pred_rnd_ft,"Random Forest Regressor")  
         
         if show_config:
-            cfg_options = ["Bagging Regressor",
-                "Decision Tree Regressor",
-                "Ada Boost Regressor",
-                "Gradient Boosting Regressor",
-                "PCA con Random Forest Regressor",
-                "Random Forest Regressor","Regresion lineal"
-                ]
+            cfg_options = ["Regresion lineal",
+                            "Decision Tree Regressor",
+                            "Random Forest Regressor",
+                            "Ada Boost Regressor",
+                            "Gradient Boosting Regressor",
+                            "PCA con Random Forest Regressor",
+                            "Bagging Regressor"]
             cfg = st.selectbox("Seleccionar configuración", cfg_options)        
             if cfg == "Bagging Regressor":   
                 st.write(model_bag)
@@ -368,7 +371,16 @@ def main():
             if cfg == "Regresion lineal":
                 st.write(model_lin)
    
-        if show_dataframe:
+        if show_dataframes:
+                st.write('-- Dataset Original --')
+                st.dataframe(df_raw)
+                st.write('-- Dataset Modificado --')
+                st.dataframe(df_ml_original)
+                text_show = st.checkbox("Mostrar/ocultar Seleccion de mecánicas")
+                if text_show:
+                    st.text_area("Proceso de selección de mecánicas", txt_mecanicas)
+
+        if show_dataframe_errors:
                 st.dataframe(df_errores)  
 
         if show_rating:
