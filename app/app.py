@@ -155,7 +155,7 @@ def grf_corr():
 
 # Funcion principal del dataframe que vamos modificando con slides
 
-def user_input_parameters():
+def user_input_parameters(): # Parametros que metemos en la app
     min_players = st.sidebar.slider("Mínimo número de jugadores",1,10)
     max_players = st.sidebar.slider("Máximo número de jugadores",1,20)
     play_time = st.sidebar.slider("Tiempo de juego aproximado",5,150)
@@ -228,6 +228,7 @@ def user_input_parameters():
 df = user_input_parameters()
 
 correlation_matrix = df_ml_original.corr()
+
 # Funcion principal de la App
 
 
@@ -276,11 +277,17 @@ def main():
     def data_scientist_page():
         st.title("Página para Científicos de Datos")
         
-        option =["Bagging Regressor","Linear Regression","Decision Tree Regressor" ,"Random Forest Regressor","Ada Boost Regressor","Gradient Boosting Regressor","PCA con Random Forest Regressor"]
+        option =["Regresion lineal",
+                "Decision Tree Regressor",
+                "Random Forest Regressor",
+                "Ada Boost Regressor",
+                "Gradient Boosting Regressor",
+                "PCA con Random Forest Regressor",
+                "Bagging Regressor"]
         model = st.sidebar.selectbox("¿Que modelo quieres probar?",option)
 
         show_dataframes = st.checkbox("Mostrar/ocultar Data Frame original vs Data Frame análisis")
-        show_dataframe_errors = st.checkbox("Mostrar/ocultar Data Frame con errores de cada modelo")
+        show_dataframe_errors = st.checkbox("Mostrar/ocultar Data Frame con métricas de cada modelo")
         show_rating = st.checkbox("Mostrar/ocultar rating de usuarios")
         show_grafs = st.checkbox("Graficas valores de prueba vs valores predichos")
         show_config = st.checkbox("Mostrar/ocultar configuraciones de modelos")
@@ -288,12 +295,12 @@ def main():
         show_corr_map = st.checkbox("Mostrar/ocultar mapa de correlación")
         show_graf_bi = st.checkbox("Mostrar/ocultar comparación variables")
         
-        if show_corr_map:
+        if show_corr_map: # Matriz de correlación
                 grf_corr()
-        if show_corr_mat:
+        if show_corr_mat: # Heatmap
                 mtx_corr()
         
-        if show_graf_bi:
+        if show_graf_bi: # Graficas de EDA
             select_graf_bi_options = ("BGG rank vs Rating Usuarios","Complejidad de juego vs Rating Usuarios","Densidad Rating Average","Mecanicas que más correlan con el rating","Mecanicas con mejor nota","Géneros que más correlan con el rating","Géneros con mejor nota")
             select_graf_bi = st.selectbox("Selecciona gráfico",select_graf_bi_options)
             if select_graf_bi == "BGG rank vs Rating Usuarios":
@@ -312,7 +319,7 @@ def main():
                 plot_barplots(df_ml_original,"Rating Average",['Strategy','Wargames'])
 
         
-        if show_grafs:
+        if show_grafs: # Graficas valores pred vs valores test
             pred_rnd_ft = rnd_ft.predict(X_test)
             poly_feats = PolynomialFeatures(degree = model_lin['degree'])
             poly_feats.fit(X_train)
@@ -347,7 +354,7 @@ def main():
             if graf == "Random Forest Regressor":
                 grafica(pred_rnd_ft,"Random Forest Regressor")  
         
-        if show_config:
+        if show_config: # Configuración de modelos
             cfg_options = ["Regresion lineal",
                             "Decision Tree Regressor",
                             "Random Forest Regressor",
@@ -371,7 +378,7 @@ def main():
             if cfg == "Regresion lineal":
                 st.write(model_lin)
    
-        if show_dataframes:
+        if show_dataframes: # Muestra de df original vs mod
                 st.write('-- Dataset Original --')
                 st.dataframe(df_raw)
                 st.write('-- Dataset Modificado --')
@@ -380,10 +387,10 @@ def main():
                 if text_show:
                     st.text_area("Proceso de selección de mecánicas", txt_mecanicas)
 
-        if show_dataframe_errors:
+        if show_dataframe_errors: # Metricas
                 st.dataframe(df_errores)  
 
-        if show_rating:
+        if show_rating: # Mostrar rating de usuarios
             if model == "Bagging Regressor":
                 prediccion = bag_reg.predict(df)
                 st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2))) 
@@ -407,7 +414,7 @@ def main():
                     prediccion = pca_rf.best_estimator_.predict(df)
                     st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
     
-    page = st.sidebar.selectbox("Selecciona una página", ("Cliente", "Científicos de Datos"))   
+    page = st.sidebar.selectbox("Selecciona una página", ("Cliente", "Científicos de Datos"))   # Selector Cliente y DS
         
     if page == "Cliente":
         user_page()
