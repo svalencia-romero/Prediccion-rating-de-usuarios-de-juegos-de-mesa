@@ -394,7 +394,7 @@ def main():
             if model == "Bagging Regressor":
                 prediccion = bag_reg.predict(df)
                 st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2))) 
-            if model == "Linear Regression":
+            if model == "Regresion lineal":
                 df_transformado = transformacion.transform(df)
                 prediccion = lin_reg.predict(df_transformado)
                 st.success("El rating de usuarios es de: " + str(round(prediccion[0], 2)))
